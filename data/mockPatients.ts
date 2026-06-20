@@ -6,7 +6,7 @@ export const mockPatients = [
       diagnosis: "Pneumonia",
       dischargeDate: "2026-06-15",
       risk: "High Risk",
-      issue: "Missing follow-up plan",
+      issue: "Missing medication info",
       score: 72,
     },
     {

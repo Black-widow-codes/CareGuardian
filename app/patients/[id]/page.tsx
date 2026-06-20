@@ -1,5 +1,5 @@
 import { mockPatients } from "@/data/mockPatients";
-
+import { calculateRiskScore, getRiskLevel } from "@/lib/riskEngine";
 export default async function PatientDetailsPage({
   params,
 }: {
@@ -55,10 +55,10 @@ export default async function PatientDetailsPage({
           <h2 className="text-2xl font-semibold">Safety Score</h2>
 
           <p className="mt-4 text-4xl font-bold text-yellow-600">
-            {patient.score} / 100
+          {calculateRiskScore(patient)} / 100
           </p>
 
-          <p className="mt-2 text-slate-700">Risk Level: {patient.risk}</p>
+          <p className="mt-2 text-slate-700">Risk Level: {getRiskLevel(calculateRiskScore(patient))}</p>
         </section>
       </div>
     </main>
