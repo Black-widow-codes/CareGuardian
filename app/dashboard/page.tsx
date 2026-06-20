@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { calculateRiskScore, getRiskLevel } from "@/lib/riskEngine";
 import { mockPatients } from "@/data/mockPatients";
 
 export default function DashboardPage() {
@@ -67,19 +69,19 @@ export default function DashboardPage() {
 
           <div className="mt-4 space-y-4">
             {mockPatients.map((patient) => (
-              <div
-                key={patient.id}
-                className="border rounded-lg p-4 flex justify-between items-center"
-              >
+              <Link
+              href={`/patients/${patient.id}`}
+              key={patient.id}
+              className="border rounded-lg p-4 flex justify-between items-center hover:bg-slate-50">
                 <div>
                   <p className="font-semibold">{patient.name}</p>
                   <p className="text-sm text-slate-600">{patient.issue}</p>
                 </div>
 
                 <span className="font-semibold text-red-600">
-                  {patient.risk}
+                {getRiskLevel(calculateRiskScore(patient))}
                 </span>
-              </div>
+              </Link>
             ))}
           </div>
         </section>
