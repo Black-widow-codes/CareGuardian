@@ -1,14 +1,8 @@
 import Link from "next/link";
+import type { Alert } from "@/types/alert";
 
 type AlertCardProps = {
-  alert: {
-    id: number;
-    type: string;
-    patientId: number;
-    patient: string;
-    severity: string;
-    status: string;
-  };
+  alert: Alert;
 };
 
 export default function AlertCard({ alert }: AlertCardProps) {

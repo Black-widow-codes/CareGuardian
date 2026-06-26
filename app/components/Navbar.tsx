@@ -1,4 +1,5 @@
 import Link from "next/link";
+import StatCard from "@/app/components/StatCard";
 
 export default function Navbar() {
   return (

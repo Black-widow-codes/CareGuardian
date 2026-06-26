@@ -1,12 +1,9 @@
 import Link from "next/link";
+import type { Patient } from "@/types/patient";
 import { calculateRiskScore, getRiskLevel } from "@/lib/riskEngine";
 
 type PatientCardProps = {
-  patient: {
-    id: number;
-    name: string;
-    issue: string;
-  };
+  patient: Patient;
 };
 
 export default function PatientCard({ patient }: PatientCardProps) {
@@ -23,7 +20,9 @@ export default function PatientCard({ patient }: PatientCardProps) {
         <p className="text-sm text-slate-600">{patient.issue}</p>
       </div>
 
-      <span className="font-semibold text-red-600">{riskLevel}</span>
+      <span className="font-semibold text-red-600">
+        {riskLevel}
+      </span>
     </Link>
   );
 }

@@ -1,32 +1,34 @@
-export const mockPatients = [
-    {
-      id: 1,
-      name: "John Smith",
-      dob: "1980-04-15",
-      diagnosis: "Pneumonia",
-      dischargeDate: "2026-06-15",
-      risk: "High Risk",
-      issue: "Missing medication info",
-      score: 72,
-    },
-    {
-      id: 2,
-      name: "Mary Johnson",
-      dob: "1975-09-22",
-      diagnosis: "Heart Failure",
-      dischargeDate: "2026-06-16",
-      risk: "Medium Risk",
-      issue: "Pending test result",
-      score: 81,
-    },
-    {
-      id: 3,
-      name: "David Lee",
-      dob: "1990-02-10",
-      diagnosis: "Diabetes",
-      dischargeDate: "2026-06-17",
-      risk: "High Risk",
-      issue: "Missing medication info",
-      score: 68,
-    },
-  ];
+import type { Patient } from "@/types/patient";
+
+export const mockPatients: Patient[] = [
+  {
+    id: 1,
+    name: "John Smith",
+    dob: "1980-04-15",
+    diagnosis: "Pneumonia",
+    dischargeDate: "2026-06-15",
+    risk: "High Risk",
+    issue: "Missing follow-up plan",
+    score: 72,
+  },
+  {
+    id: 2,
+    name: "Mary Johnson",
+    dob: "1975-09-22",
+    diagnosis: "Heart Failure",
+    dischargeDate: "2026-06-16",
+    risk: "Medium Risk",
+    issue: "Pending test result",
+    score: 81,
+  },
+  {
+    id: 3,
+    name: "David Lee",
+    dob: "1990-02-10",
+    diagnosis: "Diabetes",
+    dischargeDate: "2026-06-17",
+    risk: "High Risk",
+    issue: "Missing medication info",
+    score: 68,
+  },
+];
