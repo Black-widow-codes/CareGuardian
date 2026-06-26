@@ -1,18 +1,23 @@
-import Link from "next/link";
-import { calculateRiskScore, getRiskLevel } from "@/lib/riskEngine";
+import StatCard from "../components/StatCard";
+import PatientCard from "../components/PatientCard";
+
 import { mockPatients } from "@/data/mockPatients";
+import { calculateRiskScore, getRiskLevel } from "@/lib/riskEngine";
 
 export default function DashboardPage() {
   const highRisk = mockPatients.filter(
-    (patient) => patient.risk === "High Risk"
+    (patient) =>
+      getRiskLevel(calculateRiskScore(patient)) === "High Risk"
   ).length;
 
   const mediumRisk = mockPatients.filter(
-    (patient) => patient.risk === "Medium Risk"
+    (patient) =>
+      getRiskLevel(calculateRiskScore(patient)) === "Medium Risk"
   ).length;
 
   const lowRisk = mockPatients.filter(
-    (patient) => patient.risk === "Low Risk"
+    (patient) =>
+      getRiskLevel(calculateRiskScore(patient)) === "Low Risk"
   ).length;
 
   return (
@@ -27,27 +32,28 @@ export default function DashboardPage() {
         </p>
 
         <section className="grid md:grid-cols-4 gap-6 mt-10">
-          <div className="bg-white p-6 rounded-xl shadow">
-            <p className="text-slate-500">Awaiting Discharge</p>
-            <p className="text-3xl font-bold mt-2">{mockPatients.length}</p>
-          </div>
+          <StatCard
+            label="Awaiting Discharge"
+            value={mockPatients.length}
+          />
 
-          <div className="bg-white p-6 rounded-xl shadow">
-            <p className="text-slate-500">High Risk</p>
-            <p className="text-3xl font-bold mt-2 text-red-600">{highRisk}</p>
-          </div>
+          <StatCard
+            label="High Risk"
+            value={highRisk}
+            color="text-red-600"
+          />
 
-          <div className="bg-white p-6 rounded-xl shadow">
-            <p className="text-slate-500">Medium Risk</p>
-            <p className="text-3xl font-bold mt-2 text-yellow-600">
-              {mediumRisk}
-            </p>
-          </div>
+          <StatCard
+            label="Medium Risk"
+            value={mediumRisk}
+            color="text-yellow-600"
+          />
 
-          <div className="bg-white p-6 rounded-xl shadow">
-            <p className="text-slate-500">Low Risk</p>
-            <p className="text-3xl font-bold mt-2 text-green-600">{lowRisk}</p>
-          </div>
+          <StatCard
+            label="Low Risk"
+            value={lowRisk}
+            color="text-green-600"
+          />
         </section>
 
         <section className="mt-10 bg-white rounded-xl shadow p-6">
@@ -69,19 +75,10 @@ export default function DashboardPage() {
 
           <div className="mt-4 space-y-4">
             {mockPatients.map((patient) => (
-              <Link
-              href={`/patients/${patient.id}`}
-              key={patient.id}
-              className="border rounded-lg p-4 flex justify-between items-center hover:bg-slate-50">
-                <div>
-                  <p className="font-semibold">{patient.name}</p>
-                  <p className="text-sm text-slate-600">{patient.issue}</p>
-                </div>
-
-                <span className="font-semibold text-red-600">
-                {getRiskLevel(calculateRiskScore(patient))}
-                </span>
-              </Link>
+              <PatientCard
+                key={patient.id}
+                patient={patient}
+              />
             ))}
           </div>
         </section>
