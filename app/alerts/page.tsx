@@ -1,28 +1,5 @@
 import Link from "next/link";
-
-const alerts = [
-  {
-    type: "Missing Follow-Up Appointment",
-    patientId: 1,
-    patient: "John Smith",
-    severity: "Medium",
-    status: "Open",
-  },
-  {
-    type: "Pending Test Result",
-    patientId: 2,
-    patient: "Mary Johnson",
-    severity: "High",
-    status: "Open",
-  },
-  {
-    type: "Missing Medication Information",
-    patientId: 3,
-    patient: "David Lee",
-    severity: "High",
-    status: "Open",
-  },
-];
+import { mockAlerts } from "@/data/mockAlerts";
 
 export default function AlertsPage() {
   return (
@@ -35,9 +12,9 @@ export default function AlertsPage() {
         </p>
 
         <section className="mt-10 space-y-4">
-          {alerts.map((alert) => (
+          {mockAlerts.map((alert) => (
             <div
-              key={alert.type}
+              key={alert.id}
               className="bg-white rounded-xl shadow p-6 border"
             >
               <h2 className="text-xl font-semibold text-slate-900">
