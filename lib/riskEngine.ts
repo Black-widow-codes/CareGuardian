@@ -4,19 +4,31 @@ import type { RiskLevel } from "@/types/risk";
 export function calculateRiskScore(patient: Patient): number {
   let score = 100;
 
-  if (patient.issue.toLowerCase().includes("follow-up")) {
+  if (!patient.medicationReconciled) {
     score -= 25;
   }
 
-  if (patient.issue.toLowerCase().includes("test")) {
+  if (!patient.followUpScheduled) {
     score -= 20;
   }
 
-  if (patient.issue.toLowerCase().includes("medication")) {
-    score -= 25;
+  if (patient.pendingTests) {
+    score -= 20;
   }
 
-  return score;
+  if (!patient.providerAssigned) {
+    score -= 20;
+  }
+
+  if (!patient.dischargeInstructionsGiven) {
+    score -= 15;
+  }
+
+  if (!patient.homeCareReferral) {
+    score -= 10;
+  }
+
+  return Math.max(score, 0);
 }
 
 export function getRiskLevel(score: number): RiskLevel {
