@@ -1,23 +1,22 @@
 import StatCard from "../components/StatCard";
 import PatientCard from "../components/PatientCard";
 
-import { mockPatients } from "@/data/mockPatients";
+import { getPatients } from "@/services/patientService";
 import { calculateRiskScore, getRiskLevel } from "@/lib/riskEngine";
 
 export default function DashboardPage() {
-  const highRisk = mockPatients.filter(
-    (patient) =>
-      getRiskLevel(calculateRiskScore(patient)) === "High Risk"
+  const patients = getPatients();
+
+  const highRisk = patients.filter(
+    (patient) => getRiskLevel(calculateRiskScore(patient)) === "High Risk"
   ).length;
 
-  const mediumRisk = mockPatients.filter(
-    (patient) =>
-      getRiskLevel(calculateRiskScore(patient)) === "Medium Risk"
+  const mediumRisk = patients.filter(
+    (patient) => getRiskLevel(calculateRiskScore(patient)) === "Medium Risk"
   ).length;
 
-  const lowRisk = mockPatients.filter(
-    (patient) =>
-      getRiskLevel(calculateRiskScore(patient)) === "Low Risk"
+  const lowRisk = patients.filter(
+    (patient) => getRiskLevel(calculateRiskScore(patient)) === "Low Risk"
   ).length;
 
   return (
@@ -32,16 +31,9 @@ export default function DashboardPage() {
         </p>
 
         <section className="grid md:grid-cols-4 gap-6 mt-10">
-          <StatCard
-            label="Awaiting Discharge"
-            value={mockPatients.length}
-          />
+          <StatCard label="Awaiting Discharge" value={patients.length} />
 
-          <StatCard
-            label="High Risk"
-            value={highRisk}
-            color="text-red-600"
-          />
+          <StatCard label="High Risk" value={highRisk} color="text-red-600" />
 
           <StatCard
             label="Medium Risk"
@@ -49,11 +41,7 @@ export default function DashboardPage() {
             color="text-yellow-600"
           />
 
-          <StatCard
-            label="Low Risk"
-            value={lowRisk}
-            color="text-green-600"
-          />
+          <StatCard label="Low Risk" value={lowRisk} color="text-green-600" />
         </section>
 
         <section className="mt-10 bg-white rounded-xl shadow p-6">
@@ -74,11 +62,8 @@ export default function DashboardPage() {
           </h2>
 
           <div className="mt-4 space-y-4">
-            {mockPatients.map((patient) => (
-              <PatientCard
-                key={patient.id}
-                patient={patient}
-              />
+            {patients.map((patient) => (
+              <PatientCard key={patient.id} patient={patient} />
             ))}
           </div>
         </section>
