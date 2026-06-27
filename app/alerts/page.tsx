@@ -1,7 +1,9 @@
 import AlertCard from "../components/AlertCard";
-import { mockAlerts } from "@/data/mockAlerts";
+import { getAlerts } from "@/services/alertService";
 
 export default function AlertsPage() {
+  const alerts = getAlerts();
+
   return (
     <main className="min-h-screen bg-slate-50 px-6 py-10">
       <div className="max-w-5xl mx-auto">
@@ -14,7 +16,7 @@ export default function AlertsPage() {
         </p>
 
         <section className="mt-10 space-y-4">
-          {mockAlerts.map((alert) => (
+          {alerts.map((alert) => (
             <AlertCard
               key={alert.id}
               alert={alert}

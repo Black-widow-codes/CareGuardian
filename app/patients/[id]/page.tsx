@@ -1,15 +1,13 @@
-import { mockPatients } from "@/data/mockPatients";
+import { getPatientById } from "@/services/patientService";
 import { calculateRiskScore, getRiskLevel } from "@/lib/riskEngine";
+
 export default async function PatientDetailsPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-
-  const patient = mockPatients.find(
-    (patient) => String(patient.id) === id
-  );
+  const patient = getPatientById(Number(id));
 
   if (!patient) {
     return (
@@ -22,6 +20,9 @@ export default async function PatientDetailsPage({
       </main>
     );
   }
+
+  const score = calculateRiskScore(patient);
+  const riskLevel = getRiskLevel(score);
 
   return (
     <main className="min-h-screen bg-slate-50 px-6 py-10">
@@ -55,10 +56,10 @@ export default async function PatientDetailsPage({
           <h2 className="text-2xl font-semibold">Safety Score</h2>
 
           <p className="mt-4 text-4xl font-bold text-yellow-600">
-          {calculateRiskScore(patient)} / 100
+            {score} / 100
           </p>
 
-          <p className="mt-2 text-slate-700">Risk Level: {getRiskLevel(calculateRiskScore(patient))}</p>
+          <p className="mt-2 text-slate-700">Risk Level: {riskLevel}</p>
         </section>
       </div>
     </main>
