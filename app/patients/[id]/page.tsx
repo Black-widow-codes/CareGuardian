@@ -71,53 +71,44 @@ export default async function PatientDetailsPage({
           </div>
         </section>
 
+        <section className="mt-8 rounded-2xl bg-white p-6 shadow">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-wide text-slate-500">
+                Safety Score
+              </p>
+
+              <p className="mt-2 text-5xl font-bold text-yellow-600">
+                {score}
+                <span className="text-2xl text-slate-400"> /100</span>
+              </p>
+            </div>
+
+            <div className="text-right">
+              <p className="text-sm font-medium uppercase tracking-wide text-slate-500">
+                Risk Level
+              </p>
+
+              <p className="mt-2 text-2xl font-bold text-slate-900">
+                {riskLevel}
+              </p>
+            </div>
+          </div>
+        </section>
+
         <section className="mt-8 bg-white rounded-xl shadow p-6">
           <h2 className="text-2xl font-semibold">
             Discharge Safety Checklist
           </h2>
 
           <ul className="mt-5 space-y-3">
-            <li>
-              {patient.medicationReconciled
-                ? "✅ Medication Reconciled"
-                : "❌ Medication Reconciliation Missing"}
-            </li>
-            <li>
-              {patient.followUpScheduled
-                ? "✅ Follow-up Appointment Scheduled"
-                : "❌ Follow-up Appointment Missing"}
-            </li>
-            <li>
-              {patient.pendingTests
-                ? "⚠ Pending Tests Require Follow-up"
-                : "✅ No Pending Tests"}
-            </li>
-            <li>
-              {patient.providerAssigned
-                ? "✅ Responsible Provider Assigned"
-                : "❌ Responsible Provider Missing"}
-            </li>
-            <li>
-              {patient.dischargeInstructionsGiven
-                ? "✅ Discharge Instructions Given"
-                : "❌ Discharge Instructions Missing"}
-            </li>
-            <li>
-              {patient.homeCareReferral
-                ? "✅ Home Care Referral Completed"
-                : "⚠ Home Care Referral Needed"}
-            </li>
+            <li>{patient.medicationReconciled ? "✅ Medication Reconciled" : "❌ Medication Reconciliation Missing"}</li>
+            <li>{patient.followUpScheduled ? "✅ Follow-up Appointment Scheduled" : "❌ Follow-up Appointment Missing"}</li>
+            <li>{patient.pendingTests ? "⚠ Pending Tests Require Follow-up" : "✅ No Pending Tests"}</li>
+            <li>{patient.providerAssigned ? "✅ Responsible Provider Assigned" : "❌ Responsible Provider Missing"}</li>
+            <li>{patient.dischargeInstructionsGiven ? "✅ Discharge Instructions Given" : "❌ Discharge Instructions Missing"}</li>
+            <li>{patient.homeCareReferral ? "✅ Home Care Referral Completed" : "⚠ Home Care Referral Needed"}</li>
           </ul>
-        </section>
-
-        <section className="mt-8 bg-white rounded-xl shadow p-6">
-          <h2 className="text-2xl font-semibold">Safety Score</h2>
-
-          <p className="mt-4 text-4xl font-bold text-yellow-600">
-            {score} / 100
-          </p>
-
-          <p className="mt-2 text-slate-700">Risk Level: {riskLevel}</p>
         </section>
 
         <RiskExplanation patient={patient} />
