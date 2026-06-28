@@ -1,4 +1,5 @@
 import type { Patient } from "@/types/patient";
+import { getRiskFactors } from "@/lib/riskFactors";
 
 type RiskExplanationProps = {
   patient: Patient;
@@ -7,38 +8,7 @@ type RiskExplanationProps = {
 export default function RiskExplanation({
   patient,
 }: RiskExplanationProps) {
-  const riskFactors: string[] = [];
-  const recommendations: string[] = [];
-
-  if (!patient.medicationReconciled) {
-    riskFactors.push("❌ Medication reconciliation incomplete");
-    recommendations.push("Complete medication reconciliation before discharge.");
-  }
-
-  if (!patient.followUpScheduled) {
-    riskFactors.push("❌ Follow-up appointment not scheduled");
-    recommendations.push("Schedule a follow-up appointment.");
-  }
-
-  if (patient.pendingTests) {
-    riskFactors.push("⚠ Pending laboratory tests require follow-up");
-    recommendations.push("Assign a provider to review pending test results.");
-  }
-
-  if (!patient.providerAssigned) {
-    riskFactors.push("❌ No responsible provider assigned");
-    recommendations.push("Assign a responsible provider.");
-  }
-
-  if (!patient.dischargeInstructionsGiven) {
-    riskFactors.push("❌ Discharge instructions not provided");
-    recommendations.push("Provide discharge instructions to the patient.");
-  }
-
-  if (!patient.homeCareReferral) {
-    riskFactors.push("⚠ Home care referral not completed");
-    recommendations.push("Arrange a home care referral if appropriate.");
-  }
+  const riskFactors = getRiskFactors(patient);
 
   return (
     <section className="mt-8 bg-white rounded-xl shadow p-6">
@@ -47,7 +17,7 @@ export default function RiskExplanation({
       </h2>
 
       <div className="mt-6">
-        <h3 className="font-semibold text-lg">Risk Factors</h3>
+        <h3 className="text-lg font-semibold">Risk Factors</h3>
 
         {riskFactors.length === 0 ? (
           <p className="mt-2 text-green-600">
@@ -56,25 +26,27 @@ export default function RiskExplanation({
         ) : (
           <ul className="mt-3 space-y-2">
             {riskFactors.map((factor) => (
-              <li key={factor}>{factor}</li>
+              <li key={factor.label}>{factor.label}</li>
             ))}
           </ul>
         )}
       </div>
 
       <div className="mt-8">
-        <h3 className="font-semibold text-lg">
+        <h3 className="text-lg font-semibold">
           Recommended Actions
         </h3>
 
-        {recommendations.length === 0 ? (
+        {riskFactors.length === 0 ? (
           <p className="mt-2 text-green-600">
             ✅ Patient appears ready for discharge.
           </p>
         ) : (
           <ul className="mt-3 space-y-2">
-            {recommendations.map((action) => (
-              <li key={action}>• {action}</li>
+            {riskFactors.map((factor) => (
+              <li key={factor.recommendation}>
+                • {factor.recommendation}
+              </li>
             ))}
           </ul>
         )}
