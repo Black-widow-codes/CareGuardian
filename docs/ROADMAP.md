@@ -2,7 +2,7 @@
 
 ## Current Version
 
-v0.2 – Clean Architecture
+v0.3 – Clinical Decision Support Foundation
 
 ---
 
@@ -20,7 +20,7 @@ The MVP is the entry point into the broader platform, not the final product.
 
 ## Current Goal
 
-Finish the clean architecture phase before adding new features.
+Begin v0.4 – Improved User Experience.
 
 ---
 
@@ -37,66 +37,61 @@ Completed:
 - Follow-up tracker
 - Navigation
 - Mock patient data
-- Mock alert data
 - Basic risk engine
 
 ---
 
 ## v0.2 – Clean Architecture
 
-Status: In Progress
-
-Goal:
-Create a maintainable codebase with consistent structure.
+Status: Complete
 
 Completed:
 - Shared components
 - Shared patient data
-- Shared alert data
 - Shared TypeScript types
 - Risk engine
 - Patient service
 - Alert service
-- Dashboard uses patient service
-
-Remaining:
-- Alerts page uses alert service
-- Patient detail page uses patient service
-- Patient list page uses patient service
-- Follow-up page structure reviewed
-- Standardize imports
-- Commit v0.2 milestone
-
-Definition of Done:
-No page should import mock data directly. Pages should use services.
+- Service layer migration
+- Reusable PatientCard
+- Reusable AlertCard
+- Reusable StatCard
 
 ---
 
-## v0.3 – Clinical Risk Model
+## v0.3 – Clinical Decision Support Foundation
 
-Goal:
-Replace simple issue-based scoring with a clinical discharge safety model.
+Status: Complete
 
-Planned:
-- Add discharge checklist fields
-- Add medication reconciliation status
-- Add pending test ownership
-- Add follow-up appointment status
-- Add provider assignment status
-- Update risk engine rules
-- Display explainable risk contributors
+Completed:
+- Expanded clinical patient model
+- Added discharge checklist fields
+- Added medication reconciliation status
+- Added pending test status
+- Added follow-up appointment status
+- Added provider assignment status
+- Updated risk engine rules
+- Added structured risk factors
+- Added risk explanation panel
+- Added automatic alert generation
+- Added discharge readiness engine
+- Added discharge readiness badge
+- Added dashboard readiness summary
+- Added patient filtering by readiness
 
 ---
 
 ## v0.4 – Improved User Experience
 
+Status: Next
+
 Planned:
 - Better dashboard layout
-- Risk badges
 - Safety score component
 - Page header component
-- Search and filters
 - Cleaner patient review workflow
+- Improved spacing, colors, and readability
+- Improved mobile responsiveness
 
 ---
 
@@ -147,4 +142,4 @@ Planned:
 
 ## Current Next Task
 
-Finish v0.2 by updating remaining pages to use the service layer.
+Start v0.4 by improving the user interface and patient review experience.

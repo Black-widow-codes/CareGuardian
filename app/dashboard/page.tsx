@@ -20,9 +20,7 @@ export default function DashboardPage() {
   const filteredPatients =
     filter === "All"
       ? patients
-      : patients.filter(
-          (patient) => getDischargeReadiness(patient) === filter
-        );
+      : patients.filter((patient) => getDischargeReadiness(patient) === filter);
 
   const highRisk = patients.filter(
     (patient) => getRiskLevel(calculateRiskScore(patient)) === "High Risk"
@@ -50,48 +48,83 @@ export default function DashboardPage() {
   ).length;
 
   return (
-    <main className="min-h-screen bg-slate-50 px-6 py-10">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-slate-900">
-          CareGuardian Dashboard
-        </h1>
+    <main className="min-h-screen bg-slate-100 px-6 py-10">
+      <div className="mx-auto max-w-7xl">
+        <section className="rounded-2xl bg-slate-900 px-8 py-10 text-white shadow">
+          <p className="text-sm font-semibold uppercase tracking-wide text-blue-300">
+            CareGuardian Discharge Safety Monitor
+          </p>
 
-        <p className="mt-3 text-slate-600">
-          Monitor discharge safety risks and patients requiring review.
-        </p>
+          <h1 className="mt-3 text-4xl font-bold">
+            Patient Safety Dashboard
+          </h1>
 
-        <section className="grid md:grid-cols-4 gap-6 mt-10">
-          <StatCard label="Awaiting Discharge" value={patients.length} />
-          <StatCard label="High Risk" value={highRisk} color="text-red-600" />
-          <StatCard
-            label="Medium Risk"
-            value={mediumRisk}
-            color="text-yellow-600"
-          />
-          <StatCard label="Low Risk" value={lowRisk} color="text-green-600" />
+          <p className="mt-4 max-w-3xl text-slate-300">
+            Monitor discharge readiness, identify high-risk patients, and focus
+            clinical attention on patients who need action before leaving the
+            hospital.
+          </p>
         </section>
 
-        <section className="grid md:grid-cols-3 gap-6 mt-10">
-          <StatCard
-            label="Ready for Discharge"
-            value={ready}
-            color="text-green-600"
-          />
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold text-slate-900">
+            Risk Overview
+          </h2>
 
-          <StatCard
-            label="Actions Required"
-            value={actionsRequired}
-            color="text-yellow-600"
-          />
-
-          <StatCard label="Not Ready" value={notReady} color="text-red-600" />
+          <div className="mt-4 grid gap-6 md:grid-cols-4">
+            <StatCard label="Awaiting Discharge" value={patients.length} />
+            <StatCard
+              label="High Risk"
+              value={highRisk}
+              color="text-red-600"
+            />
+            <StatCard
+              label="Medium Risk"
+              value={mediumRisk}
+              color="text-yellow-600"
+            />
+            <StatCard
+              label="Low Risk"
+              value={lowRisk}
+              color="text-green-600"
+            />
+          </div>
         </section>
 
-        <section className="mt-10 bg-white rounded-xl shadow p-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <h2 className="text-2xl font-semibold text-slate-900">
-              Patients Requiring Review
-            </h2>
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold text-slate-900">
+            Discharge Readiness
+          </h2>
+
+          <div className="mt-4 grid gap-6 md:grid-cols-3">
+            <StatCard
+              label="Ready for Discharge"
+              value={ready}
+              color="text-green-600"
+            />
+
+            <StatCard
+              label="Actions Required"
+              value={actionsRequired}
+              color="text-yellow-600"
+            />
+
+            <StatCard label="Not Ready" value={notReady} color="text-red-600" />
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-2xl bg-white p-6 shadow">
+          <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h2 className="text-2xl font-semibold text-slate-900">
+                Patients Requiring Review
+              </h2>
+
+              <p className="mt-2 text-slate-600">
+                Use the readiness filter to focus on patients who need discharge
+                action.
+              </p>
+            </div>
 
             <div className="w-full md:w-80">
               <PatientFilter value={filter} onChange={setFilter} />
@@ -99,9 +132,15 @@ export default function DashboardPage() {
           </div>
 
           <div className="mt-6 space-y-4">
-            {filteredPatients.map((patient) => (
-              <PatientCard key={patient.id} patient={patient} />
-            ))}
+            {filteredPatients.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
+                No patients match this filter.
+              </div>
+            ) : (
+              filteredPatients.map((patient) => (
+                <PatientCard key={patient.id} patient={patient} />
+              ))
+            )}
           </div>
         </section>
       </div>
