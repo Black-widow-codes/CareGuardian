@@ -28,6 +28,27 @@ export default async function PatientDetailsPage({
   const riskLevel = getRiskLevel(score);
   const readiness = getDischargeReadiness(patient);
 
+  const checklistItems = [
+    patient.medicationReconciled
+      ? "✅ Medication Reconciled"
+      : "❌ Medication Reconciliation Missing",
+    patient.followUpScheduled
+      ? "✅ Follow-up Appointment Scheduled"
+      : "❌ Follow-up Appointment Missing",
+    patient.pendingTests
+      ? "⚠ Pending Tests Require Follow-up"
+      : "✅ No Pending Tests",
+    patient.providerAssigned
+      ? "✅ Responsible Provider Assigned"
+      : "❌ Responsible Provider Missing",
+    patient.dischargeInstructionsGiven
+      ? "✅ Discharge Instructions Given"
+      : "❌ Discharge Instructions Missing",
+    patient.homeCareReferral
+      ? "✅ Home Care Referral Completed"
+      : "⚠ Home Care Referral Needed",
+  ];
+
   return (
     <main className="min-h-screen bg-slate-100 px-6 py-10">
       <div className="mx-auto max-w-5xl">
@@ -84,7 +105,7 @@ export default async function PatientDetailsPage({
               </p>
             </div>
 
-            <div className="text-right">
+            <div className="md:text-right">
               <p className="text-sm font-medium uppercase tracking-wide text-slate-500">
                 Risk Level
               </p>
@@ -96,19 +117,21 @@ export default async function PatientDetailsPage({
           </div>
         </section>
 
-        <section className="mt-8 bg-white rounded-xl shadow p-6">
-          <h2 className="text-2xl font-semibold">
+        <section className="mt-8 rounded-2xl bg-white p-6 shadow">
+          <h2 className="text-2xl font-semibold text-slate-900">
             Discharge Safety Checklist
           </h2>
 
-          <ul className="mt-5 space-y-3">
-            <li>{patient.medicationReconciled ? "✅ Medication Reconciled" : "❌ Medication Reconciliation Missing"}</li>
-            <li>{patient.followUpScheduled ? "✅ Follow-up Appointment Scheduled" : "❌ Follow-up Appointment Missing"}</li>
-            <li>{patient.pendingTests ? "⚠ Pending Tests Require Follow-up" : "✅ No Pending Tests"}</li>
-            <li>{patient.providerAssigned ? "✅ Responsible Provider Assigned" : "❌ Responsible Provider Missing"}</li>
-            <li>{patient.dischargeInstructionsGiven ? "✅ Discharge Instructions Given" : "❌ Discharge Instructions Missing"}</li>
-            <li>{patient.homeCareReferral ? "✅ Home Care Referral Completed" : "⚠ Home Care Referral Needed"}</li>
-          </ul>
+          <div className="mt-5 space-y-3">
+            {checklistItems.map((item) => (
+              <div
+                key={item}
+                className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-700"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
         </section>
 
         <RiskExplanation patient={patient} />
