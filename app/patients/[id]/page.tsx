@@ -1,6 +1,8 @@
+import DischargeReadinessBadge from "@/app/components/DischargeReadinessBadge";
 import RiskExplanation from "@/app/components/RiskExplanation";
 import { getPatientById } from "@/services/patientService";
 import { calculateRiskScore, getRiskLevel } from "@/lib/riskEngine";
+import { getDischargeReadiness } from "@/lib/dischargeReadiness";
 
 export default async function PatientDetailsPage({
   params,
@@ -24,6 +26,7 @@ export default async function PatientDetailsPage({
 
   const score = calculateRiskScore(patient);
   const riskLevel = getRiskLevel(score);
+  const readiness = getDischargeReadiness(patient);
 
   return (
     <main className="min-h-screen bg-slate-50 px-6 py-10">
@@ -32,7 +35,6 @@ export default async function PatientDetailsPage({
           Patient Discharge Review
         </h1>
 
-        {/* Patient Information */}
         <section className="mt-10 bg-white rounded-xl shadow p-6">
           <h2 className="text-2xl font-semibold">{patient.name}</h2>
           <p className="text-slate-600 mt-1">DOB: {patient.dob}</p>
@@ -42,7 +44,14 @@ export default async function PatientDetailsPage({
           </p>
         </section>
 
-        {/* Discharge Checklist */}
+        <section className="mt-8 bg-white rounded-xl shadow p-6">
+          <h2 className="text-2xl font-semibold">Discharge Readiness</h2>
+
+          <div className="mt-4">
+            <DischargeReadinessBadge status={readiness} />
+          </div>
+        </section>
+
         <section className="mt-8 bg-white rounded-xl shadow p-6">
           <h2 className="text-2xl font-semibold">
             Discharge Safety Checklist
@@ -54,31 +63,26 @@ export default async function PatientDetailsPage({
                 ? "✅ Medication Reconciled"
                 : "❌ Medication Reconciliation Missing"}
             </li>
-
             <li>
               {patient.followUpScheduled
                 ? "✅ Follow-up Appointment Scheduled"
                 : "❌ Follow-up Appointment Missing"}
             </li>
-
             <li>
               {patient.pendingTests
                 ? "⚠ Pending Tests Require Follow-up"
                 : "✅ No Pending Tests"}
             </li>
-
             <li>
               {patient.providerAssigned
                 ? "✅ Responsible Provider Assigned"
                 : "❌ Responsible Provider Missing"}
             </li>
-
             <li>
               {patient.dischargeInstructionsGiven
                 ? "✅ Discharge Instructions Given"
                 : "❌ Discharge Instructions Missing"}
             </li>
-
             <li>
               {patient.homeCareReferral
                 ? "✅ Home Care Referral Completed"
@@ -87,7 +91,6 @@ export default async function PatientDetailsPage({
           </ul>
         </section>
 
-        {/* Safety Score */}
         <section className="mt-8 bg-white rounded-xl shadow p-6">
           <h2 className="text-2xl font-semibold">Safety Score</h2>
 
@@ -95,12 +98,9 @@ export default async function PatientDetailsPage({
             {score} / 100
           </p>
 
-          <p className="mt-2 text-slate-700">
-            Risk Level: {riskLevel}
-          </p>
+          <p className="mt-2 text-slate-700">Risk Level: {riskLevel}</p>
         </section>
 
-        {/* Risk Explanation */}
         <RiskExplanation patient={patient} />
       </div>
     </main>
