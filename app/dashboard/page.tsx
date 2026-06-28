@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import PageHeader from "../components/PageHeader";
 import StatCard from "../components/StatCard";
 import PatientCard from "../components/PatientCard";
 import PatientFilter, {
@@ -20,7 +21,9 @@ export default function DashboardPage() {
   const filteredPatients =
     filter === "All"
       ? patients
-      : patients.filter((patient) => getDischargeReadiness(patient) === filter);
+      : patients.filter(
+          (patient) => getDischargeReadiness(patient) === filter
+        );
 
   const highRisk = patients.filter(
     (patient) => getRiskLevel(calculateRiskScore(patient)) === "High Risk"
@@ -50,21 +53,12 @@ export default function DashboardPage() {
   return (
     <main className="min-h-screen bg-slate-100 px-6 py-10">
       <div className="mx-auto max-w-7xl">
-        <section className="rounded-2xl bg-slate-900 px-8 py-10 text-white shadow">
-          <p className="text-sm font-semibold uppercase tracking-wide text-blue-300">
-            CareGuardian Discharge Safety Monitor
-          </p>
 
-          <h1 className="mt-3 text-4xl font-bold">
-            Patient Safety Dashboard
-          </h1>
-
-          <p className="mt-4 max-w-3xl text-slate-300">
-            Monitor discharge readiness, identify high-risk patients, and focus
-            clinical attention on patients who need action before leaving the
-            hospital.
-          </p>
-        </section>
+        <PageHeader
+          label="CareGuardian Discharge Safety Monitor"
+          title="Patient Safety Dashboard"
+          description="Monitor discharge readiness, identify high-risk patients, and focus clinical attention on patients requiring action before discharge."
+        />
 
         <section className="mt-8">
           <h2 className="text-xl font-semibold text-slate-900">
@@ -102,14 +96,16 @@ export default function DashboardPage() {
               value={ready}
               color="text-green-600"
             />
-
             <StatCard
               label="Actions Required"
               value={actionsRequired}
               color="text-yellow-600"
             />
-
-            <StatCard label="Not Ready" value={notReady} color="text-red-600" />
+            <StatCard
+              label="Not Ready"
+              value={notReady}
+              color="text-red-600"
+            />
           </div>
         </section>
 
@@ -121,8 +117,7 @@ export default function DashboardPage() {
               </h2>
 
               <p className="mt-2 text-slate-600">
-                Use the readiness filter to focus on patients who need discharge
-                action.
+                Use the readiness filter to focus on patients requiring discharge action.
               </p>
             </div>
 
@@ -143,6 +138,7 @@ export default function DashboardPage() {
             )}
           </div>
         </section>
+
       </div>
     </main>
   );
