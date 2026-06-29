@@ -9,14 +9,13 @@ import PatientFilter, {
   type PatientFilterValue,
 } from "../components/PatientFilter";
 
-import { getPatients } from "@/services/patientService";
+import { usePatients } from "@/hooks/usePatients";
 import { calculateRiskScore, getRiskLevel } from "@/lib/riskEngine";
 import { getDischargeReadiness } from "@/lib/dischargeReadiness";
 
 export default function DashboardPage() {
   const [filter, setFilter] = useState<PatientFilterValue>("All");
-
-  const patients = getPatients();
+  const { patients, loading, error } = usePatients();
 
   const filteredPatients =
     filter === "All"
@@ -53,12 +52,17 @@ export default function DashboardPage() {
   return (
     <main className="min-h-screen bg-slate-100 px-6 py-10">
       <div className="mx-auto max-w-7xl">
-
         <PageHeader
           label="CareGuardian Discharge Safety Monitor"
           title="Patient Safety Dashboard"
           description="Monitor discharge readiness, identify high-risk patients, and focus clinical attention on patients requiring action before discharge."
         />
+
+        {error && (
+          <div className="mt-8 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
+            {error}
+          </div>
+        )}
 
         <section className="mt-8">
           <h2 className="text-xl font-semibold text-slate-900">
@@ -117,7 +121,8 @@ export default function DashboardPage() {
               </h2>
 
               <p className="mt-2 text-slate-600">
-                Use the readiness filter to focus on patients requiring discharge action.
+                Use the readiness filter to focus on patients requiring
+                discharge action.
               </p>
             </div>
 
@@ -127,7 +132,11 @@ export default function DashboardPage() {
           </div>
 
           <div className="mt-6 space-y-4">
-            {filteredPatients.length === 0 ? (
+            {loading ? (
+              <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
+                Loading patients...
+              </div>
+            ) : filteredPatients.length === 0 ? (
               <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
                 No patients match this filter.
               </div>
@@ -138,7 +147,6 @@ export default function DashboardPage() {
             )}
           </div>
         </section>
-
       </div>
     </main>
   );
