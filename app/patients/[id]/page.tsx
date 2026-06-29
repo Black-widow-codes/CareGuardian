@@ -1,6 +1,6 @@
 import DischargeReadinessBadge from "@/app/components/DischargeReadinessBadge";
 import RiskExplanation from "@/app/components/RiskExplanation";
-import { getPatientById } from "@/services/patientService";
+import { patientRepository } from "@/repositories/patientRepository";
 import { calculateRiskScore, getRiskLevel } from "@/lib/riskEngine";
 import { getDischargeReadiness } from "@/lib/dischargeReadiness";
 
@@ -10,7 +10,7 @@ export default async function PatientDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const patient = getPatientById(Number(id));
+  const patient = await patientRepository.findById(Number(id));
 
   if (!patient) {
     return (
