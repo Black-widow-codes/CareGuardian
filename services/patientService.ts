@@ -1,10 +1,9 @@
 import { mockPatients } from "@/data/mockPatients";
-import type { Patient } from "@/types/patient";
 
-export function getPatients(): Patient[] {
+export function getPatients() {
   return mockPatients;
 }
 
-export function getPatientById(id: number): Patient | undefined {
+export function getPatientById(id: number) {
   return mockPatients.find((patient) => patient.id === id);
 }
