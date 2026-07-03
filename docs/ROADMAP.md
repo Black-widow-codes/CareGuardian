@@ -2,7 +2,7 @@
 
 ## Current Version
 
-v0.3 – Clinical Decision Support Foundation
+v0.5 – Data Layer
 
 ---
 
@@ -20,7 +20,7 @@ The MVP is the entry point into the broader platform, not the final product.
 
 ## Current Goal
 
-Begin v0.4 – Improved User Experience.
+Complete v0.5 by moving patient and alert reads from mock data to PostgreSQL through API routes.
 
 ---
 
@@ -83,26 +83,74 @@ Completed:
 
 ## v0.4 – Improved User Experience
 
-Status: Next
+Status: Complete
 
-Planned:
-- Better dashboard layout
-- Safety score component
-- Page header component
-- Cleaner patient review workflow
-- Improved spacing, colors, and readability
-- Improved mobile responsiveness
+Completed:
+- Improved dashboard layout
+- Improved statistic cards
+- Added reusable PageHeader component
+- Improved patient review header
+- Improved patient summary section
+- Improved safety score layout
+- Improved discharge checklist layout
+- Improved risk explanation layout
+- Applied consistent page headers to Dashboard, Patients, Alerts, and Follow-up pages
 
 ---
 
 ## v0.5 – Data Layer
 
+Status: In Progress
+
+### Sprint 1 – Database Foundation
+
+Status: Complete
+
+Completed:
+- PostgreSQL running in Docker
+- Prisma installed
+- Prisma initialized
+- DATABASE_URL configured
+- Patient model added to Prisma schema
+- Initial migration created
+- Database seeded with patient data
+- Prisma Studio verified
+
+### Sprint 2 – Read Operations
+
+Status: In Progress
+
+Completed:
+- Patient repository created
+- Prisma client helper created
+- GET /api/patients created
+- GET /api/alerts created
+- Frontend patient API client created
+- usePatients hook created
+- Dashboard reads patients through API
+- Patients page reads patients through API
+- Patient details page reads from database
+
+Remaining:
+- Create frontend alert API client
+- Create useAlerts hook
+- Alerts page reads alerts through API
+- Remove legacy patientService if no longer used
+- Remove remaining mock patient reads
+
+### Sprint 3 – Write Operations
+
 Planned:
-- PostgreSQL
-- Prisma
-- Seed data
-- API routes
-- Replace mock data with database-backed services
+- Create patient
+- Update patient
+- Delete patient
+
+### Sprint 4 – Remove Mock Data
+
+Planned:
+- Remove mockPatients
+- Remove legacy mock services
+- Database becomes the single source of truth
 
 ---
 
@@ -142,4 +190,4 @@ Planned:
 
 ## Current Next Task
 
-Start v0.4 by improving the user interface and patient review experience.
+Create `useAlerts` and migrate the Alerts page to read alerts through `/api/alerts`.

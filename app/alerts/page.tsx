@@ -1,9 +1,12 @@
+"use client";
+
 import PageHeader from "../components/PageHeader";
 import AlertCard from "../components/AlertCard";
-import { getAlerts } from "@/services/alertService";
+
+import { useAlerts } from "@/hooks/useAlerts";
 
 export default function AlertsPage() {
-  const alerts = getAlerts();
+  const { alerts, loading, error } = useAlerts();
 
   return (
     <main className="min-h-screen bg-slate-100 px-6 py-10">
@@ -13,6 +16,12 @@ export default function AlertsPage() {
           title="Alert Center"
           description="Review patient safety alerts generated from discharge risk factors and take action before discharge."
         />
+
+        {error && (
+          <div className="mt-8 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
+            {error}
+          </div>
+        )}
 
         <section className="mt-8 rounded-2xl bg-white p-6 shadow">
           <h2 className="text-2xl font-semibold text-slate-900">
@@ -24,7 +33,11 @@ export default function AlertsPage() {
           </p>
 
           <div className="mt-6 space-y-4">
-            {alerts.length === 0 ? (
+            {loading ? (
+              <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
+                Loading alerts...
+              </div>
+            ) : alerts.length === 0 ? (
               <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
                 No open alerts.
               </div>

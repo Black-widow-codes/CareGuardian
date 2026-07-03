@@ -8,13 +8,13 @@ import PatientFilter, {
   type PatientFilterValue,
 } from "../components/PatientFilter";
 
-import { getPatients } from "@/services/patientService";
+import { usePatients } from "@/hooks/usePatients";
 import { getDischargeReadiness } from "@/lib/dischargeReadiness";
 
 export default function PatientsPage() {
   const [filter, setFilter] = useState<PatientFilterValue>("All");
 
-  const patients = getPatients();
+  const { patients, loading, error } = usePatients();
 
   const filteredPatients =
     filter === "All"
@@ -31,6 +31,12 @@ export default function PatientsPage() {
           title="Patients Awaiting Discharge"
           description="Review patients, assess discharge readiness, and identify those requiring clinical action before discharge."
         />
+
+        {error && (
+          <div className="mt-8 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
+            {error}
+          </div>
+        )}
 
         <section className="mt-8 rounded-2xl bg-white p-6 shadow">
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
@@ -50,7 +56,11 @@ export default function PatientsPage() {
           </div>
 
           <div className="mt-6 space-y-4">
-            {filteredPatients.length === 0 ? (
+            {loading ? (
+              <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
+                Loading patients...
+              </div>
+            ) : filteredPatients.length === 0 ? (
               <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
                 No patients match this filter.
               </div>
