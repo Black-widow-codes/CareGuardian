@@ -1,26 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { patientRepository } from "@/repositories/patientRepository";
 
-export async function GET() {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const patients = await patientRepository.findAll();
-
-    return NextResponse.json(patients);
-  } catch (error) {
-    console.error("Error fetching patients:", error);
-
-    return NextResponse.json(
-      { error: "Failed to fetch patients" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function POST(request: NextRequest) {
-  try {
+    const { id } = await params;
     const body = await request.json();
 
-    const patient = await patientRepository.create({
+    const patient = await patientRepository.update(Number(id), {
       name: body.name,
       dob: body.dob,
       diagnosis: body.diagnosis,
@@ -36,12 +25,12 @@ export async function POST(request: NextRequest) {
       risk: body.risk,
     });
 
-    return NextResponse.json(patient, { status: 201 });
+    return NextResponse.json(patient);
   } catch (error) {
-    console.error("Error creating patient:", error);
+    console.error("Error updating patient:", error);
 
     return NextResponse.json(
-      { error: "Failed to create patient" },
+      { error: "Failed to update patient" },
       { status: 500 }
     );
   }
