@@ -25,9 +25,12 @@ export default function AdminPatientsPage() {
             </p>
           </div>
 
-          <button className="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700">
-            + New Patient
-          </button>
+          <Link
+  href="/admin/patients/new"
+  className="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+>
+  + New Patient
+</Link>
         </div>
 
         {error && (
