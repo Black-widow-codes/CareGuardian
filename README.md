@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CareGuardian
 
-## Getting Started
+**Patient Safety Intelligence Platform**
 
-First, run the development server:
+**Tagline:** Safer Discharges. Better Outcomes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+CareGuardian is a Patient Safety Intelligence Platform that helps healthcare teams identify discharge risks before patients leave the hospital through clinical decision support, workflow automation, and explainable safety intelligence.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Current MVP
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The current MVP is the **CareGuardian Discharge Safety Monitor**.
 
-## Learn More
+It focuses on improving hospital discharge safety by identifying missing or incomplete discharge information, generating safety alerts, and helping care teams determine whether a patient is ready for discharge.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Current Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Clinical Decision Support
 
-## Deploy on Vercel
+- Clinical risk scoring
+- Discharge readiness assessment
+- Risk factor explanation
+- Recommended actions
+- Automatic alert generation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Patient Management
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- View patients
+- Register patients for discharge review
+- Edit patient records
+- Delete patient records
+- Search by patient name or diagnosis
+- Filter by risk level
+
+### Dashboard
+
+- Risk overview
+- Discharge readiness summary
+- Patient review list
+- Patient filtering
+
+### Alerts
+
+- Automatic safety alerts generated from clinical risk factors
+- Alert Center for reviewing open discharge risks
+
+---
+
+## Technology Stack
+
+### Frontend
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+
+### Backend
+
+- Next.js API Routes
+- REST API
+
+### Database
+
+- PostgreSQL
+- Prisma ORM
+- Docker
+
+### Development
+
+- VS Code
+- Git
+- GitHub
+
+---
+
+## Architecture Overview
+
+CareGuardian follows a layered full-stack architecture:
+
+```text
+User Interface
+   ↓
+Reusable Components
+   ↓
+React Hooks
+   ↓
+Frontend API Clients
+   ↓
+Next.js API Routes
+   ↓
+Repositories
+   ↓
+Prisma ORM
+   ↓
+PostgreSQL
