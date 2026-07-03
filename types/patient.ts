@@ -26,5 +26,5 @@ export type Patient = {
 
   // Risk
   score: number;
-  risk: RiskLevel;
+  risk: string;
 };
