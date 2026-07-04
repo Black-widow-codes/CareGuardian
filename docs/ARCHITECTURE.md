@@ -1,193 +1,378 @@
 # CareGuardian Architecture
 
-## Overview
-
-CareGuardian is a Patient Safety Intelligence Platform.
-
-The first MVP is focused on improving the safety of hospital discharge by ensuring critical information reaches the right person, at the right time, with accountability.
+**Version:** v0.5 – Full Stack Architecture
 
 ---
 
-# Architecture Principles
+# Overview
 
-The project follows a layered architecture.
+CareGuardian is a **Patient Safety Intelligence Platform** designed to help healthcare teams identify, communicate, and reduce preventable patient harm during transitions of care.
+
+The current Minimum Viable Product (MVP) is the **CareGuardian Discharge Safety Monitor**, which provides clinical decision support for safer hospital discharge.
+
+Although the current implementation focuses on discharge safety, the platform architecture is designed to support future patient safety modules including medication safety, clinical handoffs, documentation integrity, predictive risk monitoring, and AI-assisted clinical decision support.
+
+---
+
+# Architectural Principles
+
+The architecture follows several guiding principles.
+
+## Single Responsibility
+
+Each layer has one responsibility and should not perform the responsibilities of another layer.
+
+Examples:
+
+- Pages render screens.
+- Components render UI.
+- Hooks manage frontend data.
+- Repositories manage database access.
+- Business logic contains clinical rules.
+
+---
+
+## Separation of Concerns
+
+The user interface never communicates directly with the database.
+
+All communication flows through the API and repository layers.
+
+---
+
+## Reusable Components
+
+User interface elements should be reusable whenever possible.
+
+Examples include:
+
+- PageHeader
+- PatientCard
+- AlertCard
+- StatCard
+- PatientForm
+- DischargeReadinessBadge
+
+---
+
+## Business Logic Isolation
+
+Clinical decision rules belong in the business logic layer rather than inside React components.
+
+Current examples include:
+
+- Risk Engine
+- Discharge Readiness Engine
+- Alert Generator
+
+Future AI services will also integrate at this layer.
+
+---
+
+## Database Independence
+
+React pages should never communicate directly with Prisma.
+
+Database operations are isolated behind repository classes.
+
+This makes the application easier to maintain, test, and extend.
+
+---
+
+## Explainable Clinical Intelligence
+
+Every recommendation produced by CareGuardian should be explainable.
+
+The platform is designed to support healthcare professionals rather than replace clinical judgement.
+
+---
+
+# System Architecture
 
 ```
-User Interface
-        │
-        ▼
-Components
-        │
-        ▼
-Pages
-        │
-        ▼
-Services
-        │
-        ▼
+Users
+      │
+      ▼
+Next.js App Router
+      │
+      ▼
+Reusable Components
+      │
+      ▼
+React Hooks
+(usePatients, useAlerts)
+      │
+      ▼
+Frontend API Layer
+      │
+      ▼
+REST API Routes
+(app/api)
+      │
+      ▼
+Repositories
+      │
+      ▼
 Business Logic
-        │
-        ▼
-Data
+(lib)
+      │
+      ▼
+Prisma ORM
+      │
+      ▼
+PostgreSQL
 ```
-
-Each layer has a single responsibility.
 
 ---
 
 # Folder Structure
 
-```
-app/
-```
+## app/
 
-Contains application routes and pages.
+Application routes built using the Next.js App Router.
 
 Examples:
 
 - Dashboard
-- Alerts
 - Patients
+- Alerts
 - Follow-up
+- Administration
 
 ---
 
-```
-app/components/
-```
+## app/components/
 
-Reusable UI components.
+Reusable user interface components.
 
 Examples:
 
 - Navbar
-- StatCard
+- PageHeader
 - PatientCard
 - AlertCard
+- StatCard
+- PatientForm
+- DischargeReadinessBadge
 
 ---
 
-```
-data/
-```
+## app/api/
 
-Temporary mock data.
+REST API endpoints used by the frontend.
 
-This folder will eventually be replaced by a database.
+Current endpoints include:
 
----
+- GET /api/patients
+- POST /api/patients
+- PUT /api/patients/:id
+- DELETE /api/patients/:id
+- GET /api/alerts
 
-```
-services/
-```
-
-Responsible for retrieving and managing data.
-
-Pages should communicate with services rather than directly accessing data.
-
-Future versions will replace mock services with database services.
+Future endpoints will support authentication, AI services, and additional platform modules.
 
 ---
 
-```
-lib/
-```
+## hooks/
 
-Contains reusable business logic.
+Reusable React hooks responsible for retrieving frontend data.
 
-Current example:
+Current hooks include:
 
-Risk Engine
+- usePatients
+- useAlerts
 
-Future examples:
-
-- Clinical rules
-- AI processing
-- Validation logic
+Hooks communicate with the API layer rather than directly accessing the database.
 
 ---
 
-```
-types/
-```
+## repositories/
+
+Repository layer responsible for database operations.
+
+Current repository:
+
+- PatientRepository
+
+Future repositories:
+
+- AlertRepository
+- UserRepository
+- AuditRepository
+
+---
+
+## lib/
+
+Business logic and clinical decision support.
+
+Current modules include:
+
+- Risk Engine
+- Discharge Readiness Engine
+- Alert Generator
+
+Future modules may include:
+
+- AI Clinical Review
+- Clinical NLP
+- Medication Safety Rules
+- FHIR Integration
+
+---
+
+## prisma/
+
+Database schema, migrations, and seed scripts.
+
+Contains:
+
+- Prisma schema
+- Database migrations
+- Seed data
+
+---
+
+## types/
 
 Shared TypeScript models.
 
-Examples:
+Current models include:
 
 - Patient
 - Alert
 - RiskLevel
 
+Future models will expand as additional platform modules are introduced.
+
 ---
 
-```
-docs/
-```
+## docs/
 
 Project documentation.
 
-Contains:
+Includes:
 
+- README
+- Vision
 - Roadmap
 - Changelog
 - Architecture
-- Research
-- Design decisions
+- Healthcare innovation research
 
 ---
 
-# Current Technology Stack
+# Technology Stack
 
-Frontend
+## Frontend
 
 - Next.js
 - React
 - TypeScript
 - Tailwind CSS
 
-Development
+---
 
-- Git
-- GitHub
-- VS Code
+## Backend
 
-Current Data Source
+- Next.js Route Handlers
+- REST API
 
-Mock Data
+---
 
-Future Data Source
+## Database
 
 - PostgreSQL
 - Prisma ORM
 
-Future AI
+---
+
+## Development
+
+- Docker
+- Git
+- GitHub
+- VS Code
+
+---
+
+## Planned Technologies
 
 - OpenAI
-- Clinical NLP
-
-Future Standards
-
 - HL7 FHIR
 - SMART on FHIR
 
 ---
 
-# Current Architecture Version
+# Data Flow
 
-v0.2 – Clean Architecture
+A typical request follows this sequence:
+
+```
+Browser
+   │
+   ▼
+Page
+   │
+   ▼
+Hook
+   │
+   ▼
+Frontend API Client
+   │
+   ▼
+REST API
+   │
+   ▼
+Repository
+   │
+   ▼
+Business Logic
+   │
+   ▼
+Prisma
+   │
+   ▼
+PostgreSQL
+```
+
+This layered approach separates presentation, business logic, and persistence while maintaining a clean and scalable architecture.
 
 ---
 
-# Design Philosophy
+# Current Architecture Status
 
-The project prioritizes:
+Current Version:
 
-- Simplicity
-- Maintainability
-- Scalability
-- Separation of concerns
-- Healthcare interoperability
-- Patient safety
+**v0.5 – Full Stack Architecture**
 
-Every new feature should fit within this architecture.
+Current implementation includes:
+
+- Full-stack Next.js application
+- PostgreSQL database
+- Prisma ORM
+- Repository pattern
+- REST API
+- React hooks
+- Clinical decision support engines
+- Patient administration module
+
+---
+
+# Future Architecture
+
+The architecture is designed to support future expansion into a broader Patient Safety Intelligence Platform.
+
+Planned platform modules include:
+
+- Discharge Safety
+- Clinical Handoff Intelligence
+- Medication Safety
+- Documentation Integrity
+- Patient Identity Protection
+- Early Risk Detection
+- Incident Learning Network
+- Hospital Safety Analytics
+- AI Clinical Intelligence
+
+The current architecture is intended to support these future capabilities without requiring significant structural changes.
