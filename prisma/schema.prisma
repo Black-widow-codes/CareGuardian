@@ -7,21 +7,38 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  ADMIN
+  DISCHARGE_COORDINATOR
+  NURSE
+  PATIENT_SAFETY_OFFICER
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(NURSE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Patient {
-  id                           Int      @id @default(autoincrement())
-  name                         String
-  dob                          String
-  diagnosis                    String
-  dischargeDate                String
-  medicationReconciled         Boolean
-  followUpScheduled            Boolean
-  pendingTests                 Boolean
-  providerAssigned             Boolean
-  dischargeInstructionsGiven   Boolean
-  homeCareReferral             Boolean
-  issue                        String
-  score                        Int
-  risk                         String
-  createdAt                    DateTime @default(now())
-  updatedAt                    DateTime @updatedAt
+  id                         Int      @id @default(autoincrement())
+  name                       String
+  dob                        String
+  diagnosis                  String
+  dischargeDate              String
+  medicationReconciled       Boolean
+  followUpScheduled          Boolean
+  pendingTests               Boolean
+  providerAssigned           Boolean
+  dischargeInstructionsGiven Boolean
+  homeCareReferral           Boolean
+  issue                      String
+  score                      Int
+  risk                       String
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
 }
