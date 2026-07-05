@@ -1,10 +1,35 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo, useState } from "react";
 import { usePatients } from "@/hooks/usePatients";
+import { getDischargeReadiness } from "@/lib/dischargeReadiness";
 
 export default function AdminPatientsPage() {
   const { patients, loading, error } = usePatients();
+
+  const [search, setSearch] = useState("");
+  const [riskFilter, setRiskFilter] = useState("All");
+  const [readinessFilter, setReadinessFilter] = useState("All");
+
+  const filteredPatients = useMemo(() => {
+    return patients.filter((patient) => {
+      const query = search.toLowerCase();
+      const readiness = getDischargeReadiness(patient);
+
+      const matchesSearch =
+        patient.name.toLowerCase().includes(query) ||
+        patient.diagnosis.toLowerCase().includes(query);
+
+      const matchesRisk =
+        riskFilter === "All" || patient.risk === riskFilter;
+
+      const matchesReadiness =
+        readinessFilter === "All" || readiness === readinessFilter;
+
+      return matchesSearch && matchesRisk && matchesReadiness;
+    });
+  }, [patients, search, riskFilter, readinessFilter]);
 
   async function handleDelete(patientId: number, patientName: string) {
     const confirmed = window.confirm(
@@ -57,6 +82,42 @@ export default function AdminPatientsPage() {
           </div>
         )}
 
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          <input
+            type="text"
+            placeholder="Search by patient name or diagnosis..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            className="rounded-lg border border-slate-300 bg-white px-4 py-3 shadow-sm focus:border-blue-500 focus:outline-none"
+          />
+
+          <select
+            value={riskFilter}
+            onChange={(event) => setRiskFilter(event.target.value)}
+            className="rounded-lg border border-slate-300 bg-white px-4 py-3 shadow-sm focus:border-blue-500 focus:outline-none"
+          >
+            <option value="All">All Risk Levels</option>
+            <option value="High Risk">High Risk</option>
+            <option value="Medium Risk">Medium Risk</option>
+            <option value="Low Risk">Low Risk</option>
+          </select>
+
+          <select
+            value={readinessFilter}
+            onChange={(event) => setReadinessFilter(event.target.value)}
+            className="rounded-lg border border-slate-300 bg-white px-4 py-3 shadow-sm focus:border-blue-500 focus:outline-none"
+          >
+            <option value="All">All Readiness Statuses</option>
+            <option value="Ready for Discharge">Ready for Discharge</option>
+            <option value="Ready with Actions Required">
+              Ready with Actions Required
+            </option>
+            <option value="Not Ready for Discharge">
+              Not Ready for Discharge
+            </option>
+          </select>
+        </div>
+
         <div className="mt-8 overflow-hidden rounded-xl bg-white shadow">
           <table className="min-w-full">
             <thead className="bg-slate-100">
@@ -75,8 +136,14 @@ export default function AdminPatientsPage() {
                     Loading...
                   </td>
                 </tr>
+              ) : filteredPatients.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="p-8 text-center text-slate-500">
+                    No patients found.
+                  </td>
+                </tr>
               ) : (
-                patients.map((patient) => (
+                filteredPatients.map((patient) => (
                   <tr key={patient.id} className="border-t border-slate-200">
                     <td className="px-6 py-4 font-medium">{patient.name}</td>
 
@@ -100,9 +167,7 @@ export default function AdminPatientsPage() {
                       </Link>
 
                       <button
-                        onClick={() =>
-                          handleDelete(patient.id, patient.name)
-                        }
+                        onClick={() => handleDelete(patient.id, patient.name)}
                         className="text-red-600 hover:underline"
                       >
                         Delete

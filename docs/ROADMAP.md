@@ -2,192 +2,281 @@
 
 ## Current Version
 
-v0.5 – Data Layer
+**v0.5 – Data Layer & Patient Management**
 
 ---
 
-## Product Direction
+# Product Vision
 
-CareGuardian is a Patient Safety Intelligence Platform.
+CareGuardian is a **Patient Safety Intelligence Platform**.
+
+Its mission is to help healthcare teams reduce preventable patient harm by improving clinical communication, decision support, and accountability throughout the continuum of care.
 
 The current MVP is:
 
-CareGuardian Discharge Safety Monitor
+## CareGuardian Discharge Safety Monitor
 
-The MVP is the entry point into the broader platform, not the final product.
-
----
-
-## Current Goal
-
-Complete v0.5 by moving patient and alert reads from mock data to PostgreSQL through API routes.
+The Discharge Safety Monitor is the first module of the broader CareGuardian Platform.
 
 ---
 
-## v0.1 – Working Prototype
+# Platform Evolution
 
-Status: Complete
+## Phase 1 — CareGuardian Discharge Safety Monitor
 
-Completed:
-- Landing page
-- Dashboard
-- Patient review page
-- Dynamic patient pages
-- Alert center
-- Follow-up tracker
-- Navigation
-- Mock patient data
-- Basic risk engine
+**Current MVP**
 
----
+Focus:
 
-## v0.2 – Clean Architecture
-
-Status: Complete
-
-Completed:
-- Shared components
-- Shared patient data
-- Shared TypeScript types
-- Risk engine
-- Patient service
-- Alert service
-- Service layer migration
-- Reusable PatientCard
-- Reusable AlertCard
-- Reusable StatCard
+- Safe patient discharge
+- Clinical risk assessment
+- Discharge readiness
+- Patient administration
+- Clinical alerts
 
 ---
 
-## v0.3 – Clinical Decision Support Foundation
+## Phase 2 — Clinical Workflow Intelligence
 
-Status: Complete
+Future modules:
 
-Completed:
-- Expanded clinical patient model
-- Added discharge checklist fields
-- Added medication reconciliation status
-- Added pending test status
-- Added follow-up appointment status
-- Added provider assignment status
-- Updated risk engine rules
-- Added structured risk factors
-- Added risk explanation panel
-- Added automatic alert generation
-- Added discharge readiness engine
-- Added discharge readiness badge
-- Added dashboard readiness summary
-- Added patient filtering by readiness
+- Clinical handoff intelligence
+- Care coordination
+- Follow-up tracking
+- Clinical communication workflows
 
 ---
 
-## v0.4 – Improved User Experience
+## Phase 3 — Patient Safety Intelligence Platform
 
-Status: Complete
+Platform expansion:
 
-Completed:
-- Improved dashboard layout
-- Improved statistic cards
-- Added reusable PageHeader component
-- Improved patient review header
-- Improved patient summary section
-- Improved safety score layout
-- Improved discharge checklist layout
-- Improved risk explanation layout
-- Applied consistent page headers to Dashboard, Patients, Alerts, and Follow-up pages
-
----
-
-## v0.5 – Data Layer
-
-Status: In Progress
-
-### Sprint 1 – Database Foundation
-
-Status: Complete
-
-Completed:
-- PostgreSQL running in Docker
-- Prisma installed
-- Prisma initialized
-- DATABASE_URL configured
-- Patient model added to Prisma schema
-- Initial migration created
-- Database seeded with patient data
-- Prisma Studio verified
-
-### Sprint 2 – Read Operations
-
-Status: In Progress
-
-Completed:
-- Patient repository created
-- Prisma client helper created
-- GET /api/patients created
-- GET /api/alerts created
-- Frontend patient API client created
-- usePatients hook created
-- Dashboard reads patients through API
-- Patients page reads patients through API
-- Patient details page reads from database
-
-Remaining:
-- Create frontend alert API client
-- Create useAlerts hook
-- Alerts page reads alerts through API
-- Remove legacy patientService if no longer used
-- Remove remaining mock patient reads
-
-### Sprint 3 – Write Operations
-
-Planned:
-- Create patient
-- Update patient
-- Delete patient
-
-### Sprint 4 – Remove Mock Data
-
-Planned:
-- Remove mockPatients
-- Remove legacy mock services
-- Database becomes the single source of truth
-
----
-
-## v0.6 – Authentication and Roles
-
-Planned:
-- Login
-- Role-based access
-- Discharge Coordinator role
-- Nurse role
-- Patient Safety Officer role
-
----
-
-## v0.7 – AI/NLP Features
-
-Planned:
-- Discharge summary analysis
-- Missing information detection
-- Follow-up extraction
-- Risk explanation generation
-
----
-
-## Future Platform Modules
-
-- Clinical Handoff Intelligence
-- Documentation Integrity
 - Medication Safety
-- Patient Identity Protection
-- Surgical Safety
+- Documentation Integrity
 - Early Risk Detection
 - Incident Learning Network
-- Hospital Resilience Dashboard
+- Hospital Safety Analytics
 
 ---
 
-## Current Next Task
+## Phase 4 — AI Clinical Intelligence Platform
 
-Create `useAlerts` and migrate the Alerts page to read alerts through `/api/alerts`.
+Future AI capabilities:
+
+- AI discharge review
+- Clinical NLP
+- Missing information detection
+- AI-assisted risk explanation
+- Explainable clinical recommendations
+- Predictive patient safety analytics
+
+---
+
+# Development Roadmap
+
+---
+
+# v0.1 – Working Prototype
+
+**Status:** ✅ Complete
+
+Completed:
+
+- Landing page
+- Dashboard
+- Patient review
+- Alert Center
+- Follow-up Tracker
+- Navigation
+- Mock patient data
+- Initial risk engine
+
+---
+
+# v0.2 – Clean Architecture
+
+**Status:** ✅ Complete
+
+Completed:
+
+- Shared components
+- Shared TypeScript models
+- Service layer
+- Reusable cards
+- Shared mock data
+- Risk Engine
+- Improved project structure
+
+---
+
+# v0.3 – Clinical Decision Support Foundation
+
+**Status:** ✅ Complete
+
+Completed:
+
+- Expanded patient model
+- Medication reconciliation
+- Follow-up tracking
+- Pending tests
+- Provider assignment
+- Discharge instructions
+- Home care referral
+- Risk Explanation
+- Alert Generator
+- Discharge Readiness Engine
+- Dashboard readiness summary
+
+---
+
+# v0.4 – Improved User Experience
+
+**Status:** ✅ Complete
+
+Completed:
+
+- Reusable PageHeader
+- Improved dashboard
+- Improved patient review
+- Improved safety score layout
+- Improved checklist layout
+- Improved risk explanation
+- Consistent page headers
+- Responsive layouts
+
+---
+
+# v0.5 – Data Layer & Patient Management
+
+**Status:** 🚧 In Progress
+
+## Sprint 1 — Database Foundation
+
+**Status:** ✅ Complete
+
+Completed:
+
+- PostgreSQL
+- Docker
+- Prisma ORM
+- Database migrations
+- Seed data
+- Repository pattern
+- Prisma Studio
+
+---
+
+## Sprint 2 — Read Operations
+
+**Status:** ✅ Complete
+
+Completed:
+
+- Patient Repository
+- GET Patients API
+- GET Alerts API
+- usePatients
+- useAlerts
+- Frontend API layer
+- PostgreSQL read operations
+- Removed legacy mock services
+
+---
+
+## Sprint 3 — Patient Management
+
+**Status:** ✅ Complete
+
+Completed:
+
+- Create Patient
+- Edit Patient
+- Delete Patient
+- Patient Management page
+- Register Patient page
+- Edit Patient page
+- Reusable PatientForm
+- Shared Create/Edit workflow
+
+---
+
+## Sprint 4 — Administration Experience
+
+**Status:** 🚧 In Progress
+
+Completed:
+
+- Patient search
+- Diagnosis search
+- Risk filter
+
+Remaining:
+
+- Discharge readiness filter
+- Success notifications
+- Error notifications
+- Confirmation modal
+- Client-side delete updates
+- Sorting
+- Pagination
+
+---
+
+# v0.6 – Authentication & User Roles
+
+**Planned**
+
+- User authentication
+- Session management
+- Role-based authorization
+- Administrator
+- Discharge Coordinator
+- Nurse
+- Patient Safety Officer
+
+---
+
+# v0.7 – AI Clinical Intelligence
+
+**Planned**
+
+- AI discharge review
+- Clinical NLP
+- Missing information detection
+- AI-generated risk explanations
+- Explainable recommendations
+
+---
+
+# Beyond v1.0
+
+Planned platform modules:
+
+- Clinical Handoff Intelligence
+- Medication Safety
+- Documentation Integrity
+- Patient Identity Protection
+- Early Risk Detection
+- Incident Learning Network
+- Hospital Safety Analytics
+- AI Clinical Copilot
+
+---
+
+# Current Focus
+
+Current Version:
+
+**v0.5**
+
+Current Sprint:
+
+**Sprint 4 – Administration Experience**
+
+Current Priority:
+
+Improve the patient administration workflow before introducing authentication.
+
+Next Major Milestone:
+
+**v0.6 – Authentication & Roles**
