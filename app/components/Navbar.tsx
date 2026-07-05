@@ -18,7 +18,10 @@ export default async function Navbar() {
         </div>
 
         {session ? (
-          <UserMenu />
+          <UserMenu
+          name={session.user?.name ?? "User"}
+          role={(session.user as { role?: string })?.role ?? "USER"}
+        />
         ) : (
           <Link href="/login" className="font-semibold">
             Login

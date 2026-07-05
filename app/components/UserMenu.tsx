@@ -2,12 +2,26 @@
 
 import { signOut } from "next-auth/react";
 
-export default function UserMenu() {
+type UserMenuProps = {
+  name: string;
+  role: string;
+};
+
+export default function UserMenu({
+  name,
+  role,
+}: UserMenuProps) {
   return (
     <div className="flex items-center gap-4">
-      <span className="text-sm font-medium text-slate-700">
-        System Administrator
-      </span>
+      <div className="text-right">
+        <p className="text-sm font-semibold text-slate-700">
+          {name}
+        </p>
+
+        <p className="text-xs text-slate-500">
+          {role.replaceAll("_", " ")}
+        </p>
+      </div>
 
       <button
         onClick={() => signOut({ callbackUrl: "/login" })}
