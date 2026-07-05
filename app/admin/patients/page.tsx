@@ -1,10 +1,13 @@
 "use client";
 
-import { toast } from "sonner";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
+
+import ConfirmDialog from "@/app/components/ConfirmDialog";
 import { usePatients } from "@/hooks/usePatients";
 import { getDischargeReadiness } from "@/lib/dischargeReadiness";
+import type { Patient } from "@/types/patient";
 
 export default function AdminPatientsPage() {
   const { patients, setPatients, loading, error } = usePatients();
@@ -12,6 +15,7 @@ export default function AdminPatientsPage() {
   const [search, setSearch] = useState("");
   const [riskFilter, setRiskFilter] = useState("All");
   const [readinessFilter, setReadinessFilter] = useState("All");
+  const [patientToDelete, setPatientToDelete] = useState<Patient | null>(null);
 
   const filteredPatients = useMemo(() => {
     return patients.filter((patient) => {
@@ -22,8 +26,7 @@ export default function AdminPatientsPage() {
         patient.name.toLowerCase().includes(query) ||
         patient.diagnosis.toLowerCase().includes(query);
 
-      const matchesRisk =
-        riskFilter === "All" || patient.risk === riskFilter;
+      const matchesRisk = riskFilter === "All" || patient.risk === riskFilter;
 
       const matchesReadiness =
         readinessFilter === "All" || readiness === readinessFilter;
@@ -32,28 +35,26 @@ export default function AdminPatientsPage() {
     });
   }, [patients, search, riskFilter, readinessFilter]);
 
-  async function handleDelete(patientId: number, patientName: string) {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete ${patientName}?`
-    );
+  async function handleDeleteConfirmed() {
+    if (!patientToDelete) return;
 
-    if (!confirmed) return;
-
-    const response = await fetch(`/api/patients/${patientId}`, {
+    const response = await fetch(`/api/patients/${patientToDelete.id}`, {
       method: "DELETE",
     });
-    
+
     if (!response.ok) {
       toast.error("Failed to delete patient.");
       return;
     }
-    
+
     setPatients((currentPatients) =>
-      currentPatients.filter((patient) => patient.id !== patientId)
+      currentPatients.filter((patient) => patient.id !== patientToDelete.id)
     );
-    
+
     toast.success("Patient deleted successfully.");
+    setPatientToDelete(null);
   }
+
   return (
     <main className="min-h-screen bg-slate-100 px-6 py-10">
       <div className="mx-auto max-w-7xl">
@@ -150,9 +151,7 @@ export default function AdminPatientsPage() {
                 filteredPatients.map((patient) => (
                   <tr key={patient.id} className="border-t border-slate-200">
                     <td className="px-6 py-4 font-medium">{patient.name}</td>
-
                     <td className="px-6 py-4">{patient.diagnosis}</td>
-
                     <td className="px-6 py-4">{patient.risk}</td>
 
                     <td className="space-x-3 px-6 py-4">
@@ -171,7 +170,7 @@ export default function AdminPatientsPage() {
                       </Link>
 
                       <button
-                        onClick={() => handleDelete(patient.id, patient.name)}
+                        onClick={() => setPatientToDelete(patient)}
                         className="text-red-600 hover:underline"
                       >
                         Delete
@@ -184,6 +183,20 @@ export default function AdminPatientsPage() {
           </table>
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={patientToDelete !== null}
+        title="Delete Patient"
+        message={
+          patientToDelete
+            ? `Are you sure you want to delete ${patientToDelete.name}? This action cannot be undone.`
+            : ""
+        }
+        confirmText="Delete Patient"
+        cancelText="Cancel"
+        onConfirm={handleDeleteConfirmed}
+        onCancel={() => setPatientToDelete(null)}
+      />
     </main>
   );
 }
