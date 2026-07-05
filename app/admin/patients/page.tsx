@@ -7,7 +7,7 @@ import { usePatients } from "@/hooks/usePatients";
 import { getDischargeReadiness } from "@/lib/dischargeReadiness";
 
 export default function AdminPatientsPage() {
-  const { patients, loading, error } = usePatients();
+  const { patients, setPatients, loading, error } = usePatients();
 
   const [search, setSearch] = useState("");
   const [riskFilter, setRiskFilter] = useState("All");
@@ -48,11 +48,11 @@ export default function AdminPatientsPage() {
       return;
     }
     
-    toast.success("Patient deleted successfully.");
+    setPatients((currentPatients) =>
+      currentPatients.filter((patient) => patient.id !== patientId)
+    );
     
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    toast.success("Patient deleted successfully.");
   }
   return (
     <main className="min-h-screen bg-slate-100 px-6 py-10">

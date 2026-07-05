@@ -26,6 +26,7 @@ export function usePatients() {
 
   return {
     patients,
+    setPatients,
     loading,
     error,
   };
