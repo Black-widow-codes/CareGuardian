@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { usePatients } from "@/hooks/usePatients";
@@ -41,15 +42,18 @@ export default function AdminPatientsPage() {
     const response = await fetch(`/api/patients/${patientId}`, {
       method: "DELETE",
     });
-
+    
     if (!response.ok) {
-      alert("Failed to delete patient.");
+      toast.error("Failed to delete patient.");
       return;
     }
-
-    window.location.reload();
+    
+    toast.success("Patient deleted successfully.");
+    
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   }
-
   return (
     <main className="min-h-screen bg-slate-100 px-6 py-10">
       <div className="mx-auto max-w-7xl">
