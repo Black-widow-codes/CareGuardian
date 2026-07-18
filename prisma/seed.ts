@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import "dotenv/config";
 import { PrismaClient } from "../lib/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -12,6 +13,24 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
+  const hashedPassword = await bcrypt.hash("Admin123!", 12);
+
+await prisma.user.upsert({
+  where: {
+    email: "admin@careguardian.local",
+  },
+  update: {
+    name: "System Administrator",
+    password: hashedPassword,
+    role: "ADMIN",
+  },
+  create: {
+    name: "System Administrator",
+    email: "admin@careguardian.local",
+    password: hashedPassword,
+    role: "ADMIN",
+  },
+});
   await prisma.patient.deleteMany();
 
   await prisma.patient.createMany({

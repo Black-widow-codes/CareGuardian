@@ -2,7 +2,7 @@
 
 ## Current Version
 
-**v0.5 – Data Layer & Patient Management**
+**v0.6 – Identity & Access Management (IAM)**
 
 ---
 
@@ -12,7 +12,7 @@ CareGuardian is a **Patient Safety Intelligence Platform**.
 
 Its mission is to help healthcare teams reduce preventable patient harm by improving clinical communication, decision support, and accountability throughout the continuum of care.
 
-The current MVP is:
+The first product is:
 
 ## CareGuardian Discharge Safety Monitor
 
@@ -24,7 +24,7 @@ The Discharge Safety Monitor is the first module of the broader CareGuardian Pla
 
 ## Phase 1 — CareGuardian Discharge Safety Monitor
 
-**Current MVP**
+Current MVP
 
 Focus:
 
@@ -33,6 +33,7 @@ Focus:
 - Discharge readiness
 - Patient administration
 - Clinical alerts
+- Identity & access management
 
 ---
 
@@ -102,6 +103,7 @@ Completed:
 - Shared components
 - Shared TypeScript models
 - Service layer
+- Repository pattern foundation
 - Reusable cards
 - Shared mock data
 - Risk Engine
@@ -122,14 +124,14 @@ Completed:
 - Provider assignment
 - Discharge instructions
 - Home care referral
-- Risk Explanation
-- Alert Generator
+- Risk explanation
+- Alert generation
 - Discharge Readiness Engine
 - Dashboard readiness summary
 
 ---
 
-# v0.4 – Improved User Experience
+# v0.4 – Professional User Experience
 
 **Status:** ✅ Complete
 
@@ -141,102 +143,130 @@ Completed:
 - Improved safety score layout
 - Improved checklist layout
 - Improved risk explanation
-- Consistent page headers
 - Responsive layouts
+- Consistent page headers
 
 ---
 
 # v0.5 – Data Layer & Patient Management
 
-**Status:** 🚧 In Progress
+**Status:** ✅ Complete
 
 ## Sprint 1 — Database Foundation
 
-**Status:** ✅ Complete
-
-Completed:
+Completed
 
 - PostgreSQL
 - Docker
 - Prisma ORM
 - Database migrations
 - Seed data
-- Repository pattern
 - Prisma Studio
 
----
+### Sprint 2 — Read Operations
 
-## Sprint 2 — Read Operations
-
-**Status:** ✅ Complete
-
-Completed:
+Completed
 
 - Patient Repository
+- Alerts Repository
 - GET Patients API
 - GET Alerts API
+- Frontend API layer
 - usePatients
 - useAlerts
-- Frontend API layer
-- PostgreSQL read operations
+- PostgreSQL integration
 - Removed legacy mock services
 
----
+### Sprint 3 — Patient Management
 
-## Sprint 3 — Patient Management
+Completed
 
-**Status:** ✅ Complete
-
-Completed:
-
-- Create Patient
-- Edit Patient
-- Delete Patient
+- Create patient
+- Edit patient
+- Delete patient
 - Patient Management page
 - Register Patient page
 - Edit Patient page
 - Reusable PatientForm
 - Shared Create/Edit workflow
 
----
+### Sprint 4 — Administration Experience
 
-## Sprint 4 — Administration Experience
-
-**Status:** 🚧 In Progress
-
-Completed:
+Completed
 
 - Patient search
 - Diagnosis search
 - Risk filter
-
-Remaining:
-
 - Discharge readiness filter
-- Success notifications
-- Error notifications
-- Confirmation modal
+- Toast notifications
+- Reusable confirmation dialog
 - Client-side delete updates
+- Instant React updates
+
+Future Enhancements
+
 - Sorting
 - Pagination
+- Bulk actions
 
 ---
 
-# v0.6 – Authentication & User Roles
+# v0.6 – Identity & Access Management (IAM)
+
+**Status:** 🚧 In Progress
+
+## Sprint 1 — Authentication Foundation
+
+Completed
+
+- Auth.js
+- Prisma Adapter
+- bcrypt password hashing
+- User model
+- UserRole enum
+- Administrator seed
+- Credentials authentication
+- Custom login page
+- Protected admin routes
+- User navigation
+- Authenticated user display
+- Logout
+
+## Sprint 2 — Authorization
+
+In Progress
+
+Completed
+
+- Route protection
+- Session integration
+- Authenticated navigation
+
+Remaining
+
+- Role-based permissions
+- API authorization
+- User management
+- Session improvements
+
+---
+
+# v0.7 – Enterprise Security
 
 **Planned**
 
-- User authentication
-- Session management
-- Role-based authorization
-- Administrator
-- Discharge Coordinator
-- Nurse
-- Patient Safety Officer
+- Audit logging
+- Activity timeline
+- User management
+- Password reset
+- Account recovery
+- Security dashboard
+- Multi-factor authentication preparation
+- Session auditing
 
 ---
 
-# v0.7 – AI Clinical Intelligence
+# v0.8 – AI Clinical Intelligence
 
 **Planned**
 
@@ -245,12 +275,13 @@ Remaining:
 - Missing information detection
 - AI-generated risk explanations
 - Explainable recommendations
+- Predictive patient safety analytics
 
 ---
 
 # Beyond v1.0
 
-Planned platform modules:
+Future platform modules
 
 - Clinical Handoff Intelligence
 - Medication Safety
@@ -260,23 +291,68 @@ Planned platform modules:
 - Incident Learning Network
 - Hospital Safety Analytics
 - AI Clinical Copilot
+- FHIR Integration
+- SMART on FHIR
+- Hospital Administration Portal
+
+---
+
+# Major Milestones
+
+✅ v0.1 Working Prototype
+
+✅ v0.2 Clean Architecture
+
+✅ v0.3 Clinical Decision Support
+
+✅ v0.4 Professional User Experience
+
+✅ v0.5 Full Stack Data Layer
+
+🚧 v0.6 Identity & Access Management
+
+⬜ v0.7 Enterprise Security
+
+⬜ v0.8 AI Clinical Intelligence
+
+⬜ v1.0 CareGuardian Platform
 
 ---
 
 # Current Focus
 
-Current Version:
+Current Version
 
-**v0.5**
+**v0.6 – Identity & Access Management**
 
-Current Sprint:
+Current Sprint
 
-**Sprint 4 – Administration Experience**
+**Sprint 2 – Authorization**
 
-Current Priority:
+Current Priority
 
-Improve the patient administration workflow before introducing authentication.
+Implement role-based access control (RBAC) and secure API authorization.
 
-Next Major Milestone:
+Next Major Milestone
 
-**v0.6 – Authentication & Roles**
+**v0.7 – Enterprise Security**
+
+---
+
+# CareGuardian v1.0 Vision
+
+The first production-ready release will include:
+
+- Identity & Access Management
+- Audit Logging
+- Patient Management
+- Clinical Decision Support
+- Alerts
+- Discharge Readiness
+- PostgreSQL
+- Prisma ORM
+- REST APIs
+- Modern React Architecture
+- Professional Documentation
+
+This release establishes the foundation for the broader **CareGuardian Patient Safety Intelligence Platform**.

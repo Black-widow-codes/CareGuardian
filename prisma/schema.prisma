@@ -7,13 +7,6 @@ datasource db {
   provider = "postgresql"
 }
 
-enum UserRole {
-  ADMIN
-  DISCHARGE_COORDINATOR
-  NURSE
-  PATIENT_SAFETY_OFFICER
-}
-
 model User {
   id        Int      @id @default(autoincrement())
   name      String
@@ -41,4 +34,11 @@ model Patient {
   risk                       String
   createdAt                  DateTime @default(now())
   updatedAt                  DateTime @updatedAt
+}
+
+enum UserRole {
+  ADMIN
+  DISCHARGE_COORDINATOR
+  NURSE
+  PATIENT_SAFETY_OFFICER
 }
