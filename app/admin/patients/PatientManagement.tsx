@@ -6,10 +6,17 @@ import { toast } from "sonner";
 
 import ConfirmDialog from "@/app/components/ConfirmDialog";
 import { usePatients } from "@/hooks/usePatients";
+import { hasPermission } from "@/lib/auth/permissions";
 import { getDischargeReadiness } from "@/lib/dischargeReadiness";
 import type { Patient } from "@/types/patient";
 
-export default function AdminPatientsPage() {
+type AdminPatientsPageProps = {
+  userRole: string;
+};
+
+export default function AdminPatientsPage({
+  userRole,
+}: AdminPatientsPageProps) {
   const { patients, setPatients, loading, error } = usePatients();
 
   const [search, setSearch] = useState("");
@@ -26,7 +33,8 @@ export default function AdminPatientsPage() {
         patient.name.toLowerCase().includes(query) ||
         patient.diagnosis.toLowerCase().includes(query);
 
-      const matchesRisk = riskFilter === "All" || patient.risk === riskFilter;
+      const matchesRisk =
+        riskFilter === "All" || patient.risk === riskFilter;
 
       const matchesReadiness =
         readinessFilter === "All" || readiness === readinessFilter;
@@ -38,21 +46,27 @@ export default function AdminPatientsPage() {
   async function handleDeleteConfirmed() {
     if (!patientToDelete) return;
 
-    const response = await fetch(`/api/patients/${patientToDelete.id}`, {
-      method: "DELETE",
-    });
+    try {
+      const response = await fetch(`/api/patients/${patientToDelete.id}`, {
+        method: "DELETE",
+      });
 
-    if (!response.ok) {
-      toast.error("Failed to delete patient.");
-      return;
+      if (!response.ok) {
+        toast.error("Failed to delete patient.");
+        return;
+      }
+
+      setPatients((currentPatients) =>
+        currentPatients.filter(
+          (patient) => patient.id !== patientToDelete.id
+        )
+      );
+
+      toast.success("Patient deleted successfully.");
+      setPatientToDelete(null);
+    } catch {
+      toast.error("Something went wrong while deleting the patient.");
     }
-
-    setPatients((currentPatients) =>
-      currentPatients.filter((patient) => patient.id !== patientToDelete.id)
-    );
-
-    toast.success("Patient deleted successfully.");
-    setPatientToDelete(null);
   }
 
   return (
@@ -73,12 +87,14 @@ export default function AdminPatientsPage() {
             </p>
           </div>
 
-          <Link
-            href="/admin/patients/new"
-            className="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
-          >
-            + New Patient
-          </Link>
+          {hasPermission(userRole, "CREATE_PATIENT") && (
+            <Link
+              href="/admin/patients/new"
+              className="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+            >
+              + New Patient
+            </Link>
+          )}
         </div>
 
         {error && (
@@ -113,7 +129,9 @@ export default function AdminPatientsPage() {
             className="rounded-lg border border-slate-300 bg-white px-4 py-3 shadow-sm focus:border-blue-500 focus:outline-none"
           >
             <option value="All">All Readiness Statuses</option>
-            <option value="Ready for Discharge">Ready for Discharge</option>
+            <option value="Ready for Discharge">
+              Ready for Discharge
+            </option>
             <option value="Ready with Actions Required">
               Ready with Actions Required
             </option>
@@ -143,16 +161,30 @@ export default function AdminPatientsPage() {
                 </tr>
               ) : filteredPatients.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-slate-500">
+                  <td
+                    colSpan={4}
+                    className="p-8 text-center text-slate-500"
+                  >
                     No patients found.
                   </td>
                 </tr>
               ) : (
                 filteredPatients.map((patient) => (
-                  <tr key={patient.id} className="border-t border-slate-200">
-                    <td className="px-6 py-4 font-medium">{patient.name}</td>
-                    <td className="px-6 py-4">{patient.diagnosis}</td>
-                    <td className="px-6 py-4">{patient.risk}</td>
+                  <tr
+                    key={patient.id}
+                    className="border-t border-slate-200"
+                  >
+                    <td className="px-6 py-4 font-medium">
+                      {patient.name}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      {patient.diagnosis}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      {patient.risk}
+                    </td>
 
                     <td className="space-x-3 px-6 py-4">
                       <Link
@@ -162,19 +194,24 @@ export default function AdminPatientsPage() {
                         View
                       </Link>
 
-                      <Link
-                        href={`/admin/patients/${patient.id}/edit`}
-                        className="text-amber-600 hover:underline"
-                      >
-                        Edit
-                      </Link>
+                      {hasPermission(userRole, "EDIT_PATIENT") && (
+                        <Link
+                          href={`/admin/patients/${patient.id}/edit`}
+                          className="text-amber-600 hover:underline"
+                        >
+                          Edit
+                        </Link>
+                      )}
 
-                      <button
-                        onClick={() => setPatientToDelete(patient)}
-                        className="text-red-600 hover:underline"
-                      >
-                        Delete
-                      </button>
+                      {hasPermission(userRole, "DELETE_PATIENT") && (
+                        <button
+                          type="button"
+                          onClick={() => setPatientToDelete(patient)}
+                          className="text-red-600 hover:underline"
+                        >
+                          Delete
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))

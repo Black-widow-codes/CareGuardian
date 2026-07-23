@@ -6,9 +6,99 @@ This project follows a milestone-based development approach, with each version r
 
 ---
 
+# v0.6 – Identity & Access Management (IAM)
+
+**Status:** 🚧 In Progress
+
+## Sprint 1 – Authentication Foundation
+
+### Added
+
+#### Authentication
+
+- Integrated Auth.js for application authentication
+- Credentials-based authentication
+- Custom login page
+- Secure logout functionality
+- Protected administrator routes
+
+#### User Management
+
+- User database model
+- UserRole enum
+- Administrator seed account
+- Secure password hashing with bcrypt
+- Prisma authentication integration
+
+#### Session Management
+
+- JWT session strategy
+- User ID stored in session
+- User role stored in session
+- Authenticated user navigation
+- Logged-in user display
+
+#### Security
+
+- Protected administrative pages
+- Authentication middleware
+- Session validation
+
+---
+
+## Sprint 2 – Authorization
+
+**Status:** 🚧 In Progress
+
+### Added
+
+#### Role-Based Access Control (RBAC)
+
+- Centralized RBAC architecture
+- Strongly typed Permission model
+- Strongly typed UserRole model
+- Permission mapping for each role
+- `hasPermission()` authorization helper
+
+Supported roles:
+
+- Administrator
+- Nurse
+- Discharge Coordinator
+- Patient Safety Officer
+
+#### Route Authorization
+
+- Server-side authorization
+- Protected Patient Management page
+- Unauthorized redirect handling
+- Session-based permission validation
+
+#### Architecture
+
+- Server / Client component separation
+- Authorization handled in Server Components
+- Interactive UI handled in Client Components
+
+### In Progress
+
+#### User Interface Authorization
+
+- Permission-aware Patient Management page
+- Role-specific action visibility
+- Conditional rendering based on permissions
+
+#### Planned
+
+- API authorization
+- User management
+- Session improvements
+
+---
+
 # v0.5 – Data Layer & Patient Management
 
-**Status:** In Progress
+**Status:** ✅ Complete
 
 ## Sprint 1 – Database Foundation
 
@@ -80,29 +170,31 @@ This project follows a milestone-based development approach, with each version r
 
 ## Sprint 4 – Administration Experience
 
-**Status:** In Progress
+**Status:** ✅ Complete
 
 ### Added
 
 - Patient search
 - Diagnosis search
 - Risk level filter
-
-### Planned
-
 - Discharge readiness filter
 - Success notifications
 - Error notifications
-- Confirmation modal
+- Confirmation dialog
 - Client-side delete updates
+- Instant React updates
+
+### Planned
+
 - Sorting
 - Pagination
+- Bulk actions
 
 ---
 
-# v0.4 – Improved User Experience
+# v0.4 – Professional User Experience
 
-**Status:** Complete
+**Status:** ✅ Complete
 
 ### Added
 
@@ -118,7 +210,7 @@ This project follows a milestone-based development approach, with each version r
 
 # v0.3 – Clinical Decision Support Foundation
 
-**Status:** Complete
+**Status:** ✅ Complete
 
 ### Added
 
@@ -143,7 +235,7 @@ This project follows a milestone-based development approach, with each version r
 
 # v0.2 – Clean Architecture
 
-**Status:** Complete
+**Status:** ✅ Complete
 
 ### Added
 
@@ -164,7 +256,7 @@ This project follows a milestone-based development approach, with each version r
 
 # v0.1 – Working Prototype
 
-**Status:** Complete
+**Status:** ✅ Complete
 
 ### Added
 
