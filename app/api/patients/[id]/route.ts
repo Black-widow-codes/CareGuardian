@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+
+import { auth } from "@/auth";
+import { hasPermission } from "@/lib/auth/permissions";
 import { patientRepository } from "@/repositories/patientRepository";
 
 export async function PUT(
@@ -6,6 +9,22 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+
+    if (!session?.user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    if (!hasPermission(session.user.role, "EDIT_PATIENT")) {
+      return NextResponse.json(
+        { error: "Forbidden" },
+        { status: 403 }
+      );
+    }
+
     const { id } = await params;
     const body = await request.json();
 
@@ -35,11 +54,28 @@ export async function PUT(
     );
   }
 }
+
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+
+    if (!session?.user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    if (!hasPermission(session.user.role, "DELETE_PATIENT")) {
+      return NextResponse.json(
+        { error: "Forbidden" },
+        { status: 403 }
+      );
+    }
+
     const { id } = await params;
 
     await patientRepository.delete(Number(id));

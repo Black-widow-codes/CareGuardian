@@ -22,7 +22,7 @@ This project follows a milestone-based development approach, with each version r
 - Secure logout functionality
 - Protected administrator routes
 
-#### User Management
+#### User Management Foundation
 
 - User database model
 - UserRole enum
@@ -33,10 +33,10 @@ This project follows a milestone-based development approach, with each version r
 #### Session Management
 
 - JWT session strategy
-- User ID stored in session
-- User role stored in session
+- User ID stored in authenticated sessions
+- User role stored in authenticated sessions
 - Authenticated user navigation
-- Logged-in user display
+- Logged-in user and role display
 
 #### Security
 
@@ -57,8 +57,8 @@ This project follows a milestone-based development approach, with each version r
 - Centralized RBAC architecture
 - Strongly typed Permission model
 - Strongly typed UserRole model
-- Permission mapping for each role
-- `hasPermission()` authorization helper
+- Permission mapping for each application role
+- Reusable `hasPermission()` authorization helper
 
 Supported roles:
 
@@ -67,32 +67,89 @@ Supported roles:
 - Discharge Coordinator
 - Patient Safety Officer
 
-#### Route Authorization
+Current permissions:
 
-- Server-side authorization
-- Protected Patient Management page
-- Unauthorized redirect handling
-- Session-based permission validation
+- `VIEW_PATIENTS`
+- `CREATE_PATIENT`
+- `EDIT_PATIENT`
+- `DELETE_PATIENT`
+- `VIEW_USERS`
+- `MANAGE_USERS`
+- `VIEW_AUDIT_LOGS`
+
+#### UI Authorization
+
+- Permission-aware Patient Management interface
+- Role-specific action visibility
+- Permission-controlled New Patient action
+- Permission-controlled Edit action
+- Permission-controlled Delete action
+- Server-side session role passed to the Patient Management client component
+
+#### Patient API Authorization
+
+Added server-side RBAC enforcement to patient API operations.
+
+Protected:
+
+- `GET /api/patients` with `VIEW_PATIENTS`
+- `POST /api/patients` with `CREATE_PATIENT`
+- `PUT /api/patients/[id]` with `EDIT_PATIENT`
+- `DELETE /api/patients/[id]` with `DELETE_PATIENT`
+
+Authorization responses now distinguish between:
+
+- `401 Unauthorized` for unauthenticated requests
+- `403 Forbidden` for authenticated users without the required permission
+
+#### Alert API Authorization
+
+- Protected `GET /api/alerts`
+- Requires an authenticated session
+- Requires patient-view access
+- Prevents unauthenticated access to clinical alert information
+
+#### Authorization Testing
+
+Created a Nurse test account for role-based authorization verification.
+
+Verified:
+
+- Administrator can create patients
+- Nurse cannot create patients
+- Nurse can edit patients
+- Nurse cannot delete patients
+- Nurse can retrieve patient information
+- Unauthenticated users cannot retrieve patient information
+- Nurse can retrieve clinical alerts
+- Unauthenticated users cannot retrieve clinical alerts
+- Direct API requests cannot bypass UI authorization restrictions
 
 #### Architecture
 
-- Server / Client component separation
-- Authorization handled in Server Components
-- Interactive UI handled in Client Components
+- Authorization enforced independently at the UI and API layers
+- Server Components handle protected page authorization
+- Client Components handle permission-aware interaction
+- API routes independently validate authenticated sessions and permissions
+- Central permission model reused across frontend and backend authorization
 
-### In Progress
+### Security Improvements
 
-#### User Interface Authorization
+- Patient data is no longer available through unauthenticated patient API requests
+- Clinical alerts are no longer available through unauthenticated API requests
+- Hidden UI controls are no longer relied upon as the primary security boundary
+- Direct unauthorized patient creation requests are rejected
+- Direct unauthorized patient deletion requests are rejected
 
-- Permission-aware Patient Management page
-- Role-specific action visibility
-- Conditional rendering based on permissions
+### Remaining
 
-#### Planned
-
-- API authorization
-- User management
+- User management interface
+- User creation workflow
+- Role assignment and management
 - Session improvements
+- Discharge Coordinator authorization testing
+- Patient Safety Officer authorization testing
+- Authorization helper refactoring where appropriate
 
 ---
 
@@ -120,12 +177,12 @@ Supported roles:
 
 ### Added
 
-- GET /api/patients
-- GET /api/alerts
+- `GET /api/patients`
+- `GET /api/alerts`
 - Frontend patient API
 - Frontend alert API
-- usePatients hook
-- useAlerts hook
+- `usePatients` hook
+- `useAlerts` hook
 
 ### Changed
 
