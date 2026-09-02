@@ -1,65 +1,82 @@
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-50">
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <h1 className="text-5xl font-bold text-slate-900 mb-6">
-          CareGuardian
-        </h1>
+    <main className="min-h-screen bg-background">
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <div className="max-w-4xl">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-brand-teal">
+            Patient Safety Intelligence Platform
+          </p>
 
-        <p className="text-xl text-slate-600 mb-8">
-          A Patient Safety Intelligence Platform designed to improve clinical
-          information continuity and reduce preventable harm during transitions
-          of care.
-        </p>
+          <h1 className="mb-6 text-5xl font-bold tracking-tight text-brand-navy">
+            CareGuardian
+          </h1>
 
-        <div className="flex gap-4">
-        <a
-  href="/dashboard"
-  className="px-6 py-3 bg-blue-600 text-white rounded-lg inline-block"
->
-  View Dashboard
-</a>
+          <p className="mb-4 max-w-3xl text-xl leading-8 text-text-secondary">
+            CareGuardian helps healthcare teams identify potential safety risks,
+            strengthen critical clinical workflows, and reduce preventable patient harm.
+          </p>
 
-          <a
-  href="/learn-more"
-  className="px-6 py-3 border border-slate-300 rounded-lg inline-block"
->
-  Learn More
-</a>
+          <p className="mb-8 text-lg font-medium text-brand-navy">
+            Detect Risk. Prevent Harm. Protect Patients.
+          </p>
+
+          <div className="flex flex-wrap gap-4">
+            <a
+              href="/dashboard"
+              className="inline-block rounded-lg bg-brand-teal px-6 py-3 font-semibold text-white transition hover:bg-brand-teal-hover"
+            >
+              View Dashboard
+            </a>
+
+            <a
+              href="/learn-more"
+              className="inline-block rounded-lg border border-border-strong bg-surface px-6 py-3 font-semibold text-brand-navy transition hover:bg-brand-teal-light"
+            >
+              Learn More
+            </a>
+          </div>
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 py-10">
-        <h2 className="text-3xl font-semibold mb-6">
-          MVP: Discharge Safety Monitor
-        </h2>
+      <section className="mx-auto max-w-6xl px-6 pb-20">
+        <div className="mb-8">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.16em] text-brand-teal">
+            Current MVP
+          </p>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="p-6 bg-white rounded-xl shadow">
-            <h3 className="font-semibold text-lg mb-2">
+          <h2 className="text-3xl font-semibold text-brand-navy">
+            Discharge Safety Monitor
+          </h2>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+            <h3 className="mb-2 text-lg font-semibold text-brand-navy">
               Missing Information Detection
             </h3>
-            <p>
+            <p className="leading-7 text-text-secondary">
               Identify missing discharge information before a patient leaves
-              hospital.
+              the hospital.
             </p>
           </div>
 
-          <div className="p-6 bg-white rounded-xl shadow">
-            <h3 className="font-semibold text-lg mb-2">
+          <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+            <h3 className="mb-2 text-lg font-semibold text-brand-navy">
               Risk Scoring
             </h3>
-            <p>
-              Generate explainable patient safety risk scores.
+            <p className="leading-7 text-text-secondary">
+              Generate explainable patient-safety risk scores and identify
+              contributing factors.
             </p>
           </div>
 
-          <div className="p-6 bg-white rounded-xl shadow">
-            <h3 className="font-semibold text-lg mb-2">
+          <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+            <h3 className="mb-2 text-lg font-semibold text-brand-navy">
               Follow-Up Tracking
             </h3>
-            <p>
-              Improve accountability for post-discharge actions.
+            <p className="leading-7 text-text-secondary">
+              Improve accountability for important post-discharge actions and
+              follow-up requirements.
             </p>
           </div>
         </div>

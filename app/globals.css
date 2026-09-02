@@ -1,26 +1,97 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* CareGuardian Brand */
+  --cg-navy: #0F2747;
+  --cg-navy-dark: #0A1B33;
+  --cg-teal: #087F8C;
+  --cg-teal-hover: #066A75;
+  --cg-teal-light: #E8F5F6;
+
+  /* Application Surfaces */
+  --cg-background: #F6F8FA;
+  --cg-surface: #FFFFFF;
+  --cg-surface-muted: #F0F3F6;
+
+  /* Text */
+  --cg-text-primary: #172033;
+  --cg-text-secondary: #5D6878;
+  --cg-text-muted: #7C8796;
+
+  /* Borders */
+  --cg-border: #DCE2E8;
+  --cg-border-strong: #C6CED8;
+
+  /* Patient Safety */
+  --cg-risk-low: #16803C;
+  --cg-risk-low-bg: #EAF6EE;
+
+  --cg-risk-medium: #B65C00;
+  --cg-risk-medium-bg: #FFF4E5;
+
+  --cg-risk-high: #C62828;
+  --cg-risk-high-bg: #FDECEC;
+
+  /* Feedback */
+  --cg-info: #2563EB;
+  --cg-success: #16803C;
+  --cg-warning: #B65C00;
+  --cg-danger: #C62828;
+
+  --background: var(--cg-background);
+  --foreground: var(--cg-text-primary);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-brand-navy: var(--cg-navy);
+  --color-brand-navy-dark: var(--cg-navy-dark);
+  --color-brand-teal: var(--cg-teal);
+  --color-brand-teal-hover: var(--cg-teal-hover);
+  --color-brand-teal-light: var(--cg-teal-light);
+
+  --color-surface: var(--cg-surface);
+  --color-surface-muted: var(--cg-surface-muted);
+
+  --color-text-primary: var(--cg-text-primary);
+  --color-text-secondary: var(--cg-text-secondary);
+  --color-text-muted: var(--cg-text-muted);
+
+  --color-border: var(--cg-border);
+  --color-border-strong: var(--cg-border-strong);
+
+  --color-risk-low: var(--cg-risk-low);
+  --color-risk-low-bg: var(--cg-risk-low-bg);
+  --color-risk-medium: var(--cg-risk-medium);
+  --color-risk-medium-bg: var(--cg-risk-medium-bg);
+  --color-risk-high: var(--cg-risk-high);
+  --color-risk-high-bg: var(--cg-risk-high-bg);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--cg-background);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  margin: 0;
+  background: var(--cg-background);
+  color: var(--cg-text-primary);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }

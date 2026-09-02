@@ -9,13 +9,15 @@ export default function DischargeReadinessBadge({
 }: DischargeReadinessBadgeProps) {
   const badgeStyle =
     status === "Ready for Discharge"
-      ? "bg-green-100 text-green-700"
+      ? "bg-risk-low-bg text-risk-low"
       : status === "Ready with Actions Required"
-      ? "bg-yellow-100 text-yellow-700"
-      : "bg-red-100 text-red-700";
+        ? "bg-risk-medium-bg text-risk-medium"
+        : "bg-risk-high-bg text-risk-high";
 
   return (
-    <span className={`inline-block rounded-full px-4 py-2 text-sm font-semibold ${badgeStyle}`}>
+    <span
+      className={`inline-block rounded-full px-4 py-2 text-sm font-semibold ${badgeStyle}`}
+    >
       {status}
     </span>
   );

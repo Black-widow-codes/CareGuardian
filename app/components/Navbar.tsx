@@ -6,24 +6,61 @@ export default async function Navbar() {
   const session = await auth();
 
   return (
-    <nav className="bg-slate-900 px-6 py-4 text-white">
-      <div className="mx-auto flex max-w-6xl items-center justify-between">
-        <div className="flex gap-6">
-          <Link href="/">Home</Link>
-          <Link href="/dashboard">Dashboard</Link>
-          <Link href="/patients">Patients</Link>
-          <Link href="/alerts">Alerts</Link>
-          <Link href="/follow-up">Follow-Up</Link>
-          <Link href="/admin/patients">Admin</Link>
+    <nav className="border-b border-brand-navy-dark bg-brand-navy text-white">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <div className="flex items-center gap-7">
+          <Link href="/" className="font-bold tracking-tight">
+            CareGuardian
+          </Link>
+
+          <div className="hidden items-center gap-6 md:flex">
+            <Link
+              href="/dashboard"
+              className="text-sm font-medium text-white/90 transition hover:text-white"
+            >
+              Dashboard
+            </Link>
+
+            <Link
+              href="/patients"
+              className="text-sm font-medium text-white/90 transition hover:text-white"
+            >
+              Patients
+            </Link>
+
+            <Link
+              href="/alerts"
+              className="text-sm font-medium text-white/90 transition hover:text-white"
+            >
+              Alerts
+            </Link>
+
+            <Link
+              href="/follow-up"
+              className="text-sm font-medium text-white/90 transition hover:text-white"
+            >
+              Follow-Up
+            </Link>
+
+            <Link
+              href="/admin/patients"
+              className="text-sm font-medium text-white/90 transition hover:text-white"
+            >
+              Admin
+            </Link>
+          </div>
         </div>
 
         {session ? (
           <UserMenu
-          name={session.user?.name ?? "User"}
-          role={(session.user as { role?: string })?.role ?? "USER"}
-        />
+            name={session.user?.name ?? "User"}
+            role={session.user.role ?? "USER"}
+          />
         ) : (
-          <Link href="/login" className="font-semibold">
+          <Link
+            href="/login"
+            className="rounded-md px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
             Login
           </Link>
         )}

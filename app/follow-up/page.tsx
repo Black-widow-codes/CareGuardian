@@ -2,7 +2,7 @@ import PageHeader from "../components/PageHeader";
 
 export default function FollowUpPage() {
   return (
-    <main className="min-h-screen bg-slate-100 px-6 py-10">
+    <main className="min-h-screen bg-background px-6 py-10">
       <div className="mx-auto max-w-5xl">
         <PageHeader
           label="CareGuardian"
@@ -10,17 +10,30 @@ export default function FollowUpPage() {
           description="Track follow-up appointments and ensure patients receive appropriate care after discharge."
         />
 
-        <section className="mt-8 rounded-2xl bg-white p-6 shadow">
-          <h2 className="text-2xl font-semibold text-slate-900">
+        <section className="mt-8 rounded-2xl border border-border bg-surface p-6 shadow-sm">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand-teal">
+            Post-Discharge Care
+          </p>
+
+          <h2 className="mt-1 text-2xl font-semibold text-brand-navy">
             Follow-up Tracker
           </h2>
 
-          <p className="mt-2 text-slate-600">
-            This module will help care teams monitor scheduled follow-up appointments and identify patients requiring additional outreach after discharge.
+          <p className="mt-2 text-text-secondary">
+            This module will help care teams monitor scheduled follow-up
+            appointments and identify patients requiring additional outreach
+            after discharge.
           </p>
 
-          <div className="mt-6 rounded-xl border border-dashed border-slate-300 p-10 text-center text-slate-500">
-            Follow-up tracking features will be expanded in a future milestone.
+          <div className="mt-6 rounded-xl border border-dashed border-border-strong bg-surface-muted p-10 text-center">
+            <p className="font-medium text-brand-navy">
+              Follow-up tracking is not yet active.
+            </p>
+
+            <p className="mt-2 text-sm text-text-secondary">
+              Additional follow-up management features will be introduced in a
+              future development milestone.
+            </p>
           </div>
         </section>
       </div>
