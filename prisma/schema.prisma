@@ -19,8 +19,25 @@ model User {
 
 model Patient {
   id                         Int      @id @default(autoincrement())
+
+  // Patient identity
+  mrn                        String?  @unique
+  firstName                  String?
+  middleName                 String?
+  lastName                   String?
+  preferredName              String?
+
+  // Temporary legacy field.
+  // Keep until existing patient records are migrated.
   name                       String
+
+  // Demographics
   dob                        String
+  sexAtBirth                 String?
+  genderIdentity             String?
+  pronouns                   String?
+
+  // Current clinical/discharge information
   diagnosis                  String
   dischargeDate              String
   medicationReconciled       Boolean
@@ -32,6 +49,7 @@ model Patient {
   issue                      String
   score                      Int
   risk                       String
+
   createdAt                  DateTime @default(now())
   updatedAt                  DateTime @updatedAt
 }

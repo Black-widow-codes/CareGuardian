@@ -3,9 +3,21 @@ import type { RiskLevel } from "./risk";
 export type Patient = {
   id: number;
 
-  // Demographics
+  // Patient identity
+  mrn?: string | null;
+  firstName?: string | null;
+  middleName?: string | null;
+  lastName?: string | null;
+  preferredName?: string | null;
+
+  // Temporary legacy field
   name: string;
+
+  // Demographics
   dob: string;
+  sexAtBirth?: string | null;
+  genderIdentity?: string | null;
+  pronouns?: string | null;
 
   // Clinical
   diagnosis: string;
@@ -21,10 +33,10 @@ export type Patient = {
   dischargeInstructionsGiven: boolean;
   homeCareReferral: boolean;
 
-  // Current issue (temporary)
+  // Current issue
   issue: string;
 
   // Risk
   score: number;
-  risk: string;
+  risk: RiskLevel | string;
 };

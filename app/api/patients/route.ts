@@ -55,17 +55,44 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
+    const legacyName = [
+      body.firstName,
+      body.middleName,
+      body.lastName,
+    ]
+      .map((part) => part?.trim())
+      .filter(Boolean)
+      .join(" ");
+
     const patient = await patientRepository.create({
-      name: body.name,
+      // Structured patient identity
+      mrn: body.mrn || null,
+      firstName: body.firstName || null,
+      middleName: body.middleName || null,
+      lastName: body.lastName || null,
+      preferredName: body.preferredName || null,
+
+      // Temporary compatibility field
+      name: legacyName,
+
+      // Demographics
       dob: body.dob,
+      sexAtBirth: body.sexAtBirth || null,
+      genderIdentity: body.genderIdentity || null,
+      pronouns: body.pronouns || null,
+
+      // Clinical / discharge information
       diagnosis: body.diagnosis,
       dischargeDate: body.dischargeDate,
+
+      // Safety checklist
       medicationReconciled: body.medicationReconciled,
       followUpScheduled: body.followUpScheduled,
       pendingTests: body.pendingTests,
       providerAssigned: body.providerAssigned,
       dischargeInstructionsGiven: body.dischargeInstructionsGiven,
       homeCareReferral: body.homeCareReferral,
+
       issue: body.issue,
       score: body.score,
       risk: body.risk,
