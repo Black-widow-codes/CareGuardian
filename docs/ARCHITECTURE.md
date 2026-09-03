@@ -6,82 +6,55 @@
 
 # Overview
 
-CareGuardian is a **Patient Safety Intelligence Platform** designed to help healthcare teams identify potential safety risks and reduce preventable patient harm.
+CareGuardian is a **Patient Safety Intelligence Platform** designed to help healthcare teams identify potential safety risks, strengthen clinical safety workflows, and reduce preventable patient harm.
 
 The current MVP is the **CareGuardian Discharge Safety Monitor**, which provides clinical decision support for safer hospital discharge.
 
-CareGuardian is designed as a modular platform. The current architecture provides a foundation for additional patient-safety modules such as Surgical Safety & Reconciliation, clinical handoffs, medication safety, diagnostic follow-up, predictive risk monitoring, and AI-assisted clinical decision support.
+CareGuardian is designed as a modular platform. The architecture provides a foundation for future patient-safety modules such as:
+
+- Surgical Safety & Reconciliation
+- Clinical Handoffs
+- Medication Safety
+- Diagnostic Follow-up Safety
+- Post-Discharge Monitoring
+- Predictive Risk Monitoring
+- Hospital Safety Analytics
+- AI-assisted Clinical Decision Support
 
 ---
 
-# Architectural Principles
+# Technology Stack
 
-## Separation of Concerns
+The current CareGuardian application uses:
 
-Different parts of the application have clearly defined responsibilities.
+- Next.js
+- React
+- TypeScript
+- PostgreSQL
+- Prisma ORM
+- Auth.js
+- bcrypt
+- Tailwind CSS
 
-For example:
-
-- Pages provide application screens.
-- Components provide reusable interface elements.
-- Hooks manage frontend data.
-- API routes handle server requests.
-- Repositories manage database access.
-- Business logic contains clinical safety rules.
-- Authentication identifies users.
-- Authorization controls what users are allowed to do.
-
-This keeps clinical logic, security, presentation, and database operations separated.
+Docker is used to support the local PostgreSQL development environment.
 
 ---
 
-## Reusable Components
+# High-Level Architecture
 
-Common interface elements are implemented as reusable components.
-
-Examples include:
-
-- Navbar
-- PageHeader
-- PatientCard
-- AlertCard
-- StatCard
-- PatientForm
-- DischargeReadinessBadge
-
-This reduces duplicated code and helps maintain a consistent interface.
-
----
-
-## Business Logic Isolation
-
-Clinical safety rules should not be embedded directly inside React components.
-
-Current clinical logic includes:
-
-- Risk Engine
-- Discharge Readiness Engine
-- Alert Generator
-
-Future clinical intelligence and AI services should follow the same principle.
-
-This allows clinical rules to evolve independently from the user interface.
-
----
-
-## Database Independence
-
-Pages and React components should not communicate directly with Prisma.
-
-Database operations are handled through the repository layer.
-
-This creates the following separation:
+CareGuardian currently follows a layered web application architecture.
 
 ```text
-Application
-     ↓
-Repository
-     ↓
+User
+  ↓
+Next.js User Interface
+  ↓
+Authentication & Authorization
+  ↓
+Server Components / API Routes
+  ↓
+Application & Clinical Logic
+  ↓
 Prisma ORM
-     ↓
+  ↓
 PostgreSQL

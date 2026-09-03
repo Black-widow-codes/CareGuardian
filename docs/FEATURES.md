@@ -6,7 +6,7 @@ CareGuardian is a **Patient Safety Intelligence Platform** designed to help heal
 
 The current MVP is the **CareGuardian Discharge Safety Monitor**.
 
-It focuses on identifying discharge safety gaps before a patient leaves the hospital while providing healthcare professionals with explainable risk information and safety alerts.
+It focuses on identifying discharge safety gaps before a patient leaves the hospital while providing healthcare professionals with explainable risk information, discharge-readiness support, and safety alerts.
 
 ---
 
@@ -39,6 +39,22 @@ Authorized users can:
 - Delete patient records when permitted by their role
 
 Patient actions are controlled through role-based permissions.
+
+## Patient Identity
+
+CareGuardian supports structured patient identity information, including:
+
+- Medical Record Number (MRN)
+- First name
+- Middle name
+- Last name
+- Preferred name
+- Date of birth
+- Sex at birth
+- Gender identity
+- Pronouns
+
+The application uses structured patient names while maintaining compatibility with earlier patient records.
 
 ## Search & Filtering
 
@@ -113,6 +129,7 @@ Current capabilities include:
 - Missing discharge requirement alerts
 - Clinical follow-up reminders
 - Alert review through the Alert Center
+- Protected alert API access
 
 Alerts are generated from patient safety information and are intended to draw attention to issues that may require clinical review.
 
@@ -131,6 +148,7 @@ Current capabilities include:
 - Authenticated user sessions
 - Protected application routes
 - Protected API endpoints
+- Logout and return to the login screen
 
 ## Role-Based Access Control
 
@@ -160,15 +178,19 @@ Authorization is enforced at both the user-interface and API levels.
 Examples include:
 
 - Nurses can view and edit patient records but cannot create or delete patients.
-- Administrators can perform full patient management.
+- Discharge Coordinators can view, create, and edit patient records but cannot access User Management.
+- Administrators can perform full patient management and manage staff accounts.
 - Unauthorized API requests return `401 Unauthorized`.
 - Authenticated users without the required permission receive `403 Forbidden`.
+- Users without permission to access an administrative page are redirected to an Access Denied page.
 
-This prevents users from bypassing interface restrictions by calling protected APIs directly.
+This prevents users from bypassing interface restrictions by directly calling protected APIs.
 
 ---
 
 # Administration
+
+## Patient Administration
 
 Current capabilities include:
 
@@ -178,14 +200,32 @@ Current capabilities include:
 - Search and filtering
 - Permission-aware user interface
 
-In development/planned:
+## User Management
 
-- User management interface
-- Additional role management capabilities
-- Sorting
-- Pagination
-- Improved success notifications
-- Confirmation dialogs
+Authorized administrators can manage CareGuardian staff accounts through the User Management interface.
+
+Current capabilities include:
+
+- View system users
+- Create staff accounts
+- Edit user names
+- Edit user email addresses
+- Assign CareGuardian roles
+- Change a user's password when required
+- Preserve the existing password when no password change is requested
+- Prevent duplicate user email addresses
+- Validate passwords on both the client and server
+- Restrict User Management to authorized administrators
+- Protect User Management APIs with server-side authorization
+
+Passwords are hashed before storage and are never returned by the User Management API.
+
+Planned administrative capabilities include:
+
+- Account activation and deactivation
+- Additional account security controls
+- Sorting and pagination
+- Administrative audit logging
 
 ---
 
@@ -209,18 +249,23 @@ The repository layer separates application logic from direct database access and
 
 - User authentication
 - Password hashing
-- Session-based authentication
+- Authenticated sessions
 - Role-based access control (RBAC)
 - Permission-based authorization
 - Protected patient APIs
 - Protected alert APIs
+- Protected user-management APIs
 - Server-side authorization
+- Administrative user management
+- Client-side and server-side password validation
+- Unauthorized access handling
 - `401 Unauthorized` handling
 - `403 Forbidden` handling
+- Permission-aware navigation and interface controls
 
 ## Planned
 
-- User administration
+- Account activation and deactivation
 - Session management improvements
 - Audit logging
 - Security event tracking
