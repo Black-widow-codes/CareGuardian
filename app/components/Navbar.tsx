@@ -42,20 +42,21 @@ export default async function Navbar() {
               Follow-Up
             </Link>
 
-            <Link
-              href="/admin/patients"
-              className="text-sm font-medium text-white/90 transition hover:text-white"
-            >
-              Admin
-            </Link>
+            {session?.user?.role === "ADMIN" && (
+  <Link
+    href="/admin/users"
+    className="text-sm font-medium text-white/90 transition hover:text-white"
+  >
+    Admin
+  </Link>
+)}
           </div>
         </div>
 
         {session ? (
           <UserMenu
-            name={session.user?.name ?? "User"}
-            role={session.user.role ?? "USER"}
-          />
+          name={session.user?.name ?? "User"}
+        />
         ) : (
           <Link
             href="/login"
