@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+﻿import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/auth";
@@ -54,6 +54,14 @@ export async function PUT(
     const name = String(body.name ?? "").trim();
     const email = String(body.email ?? "").trim().toLowerCase();
     const role = String(body.role ?? "");
+    if (typeof body.isActive !== "boolean") {
+      return Response.json(
+        { error: "Invalid account status." },
+        { status: 400 }
+      );
+    }
+
+    const isActive = body.isActive;
     const password = String(body.password ?? "");
 
     if (!name || !email || !role) {
@@ -96,11 +104,13 @@ export async function PUT(
       name: string;
       email: string;
       role: (typeof allowedRoles)[number];
+      isActive: boolean;
       password?: string;
     } = {
       name,
       email,
       role: role as (typeof allowedRoles)[number],
+      isActive,
     };
 
     if (password) {
@@ -124,8 +134,10 @@ export async function PUT(
         role: true,
         createdAt: true,
         updatedAt: true,
+        isActive: true,
       },
     });
+
 
     return NextResponse.json(updatedUser);
   } catch (error) {
@@ -137,3 +149,5 @@ export async function PUT(
     );
   }
 }
+
+

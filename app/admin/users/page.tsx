@@ -21,6 +21,7 @@ export default async function UsersPage() {
       name: true,
       email: true,
       role: true,
+      isActive: true,
       createdAt: true,
     },
     orderBy: {
@@ -86,6 +87,9 @@ export default async function UsersPage() {
     <th className="px-6 py-4 text-left text-sm font-semibold text-brand-navy">
       Role
     </th>
+    <th className="px-6 py-4 text-left text-sm font-semibold text-brand-navy">
+      Status
+    </th>
 
     <th className="px-6 py-4 text-left text-sm font-semibold text-brand-navy">
       Created
@@ -114,6 +118,17 @@ export default async function UsersPage() {
                     <td className="px-6 py-4">
                       <span className="rounded-full bg-brand-teal-light px-3 py-1 text-sm font-semibold text-brand-teal">
                         {user.role.replaceAll("_", " ")}
+                        <td className="px-6 py-4">
+  <span
+    className={
+      user.isActive
+        ? "rounded-full bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700"
+        : "rounded-full bg-red-50 px-3 py-1 text-sm font-semibold text-red-700"
+    }
+  >
+    {user.isActive ? "Active" : "Inactive"}
+  </span>
+</td>
                       </span>
                     </td>
 

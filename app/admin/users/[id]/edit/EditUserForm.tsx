@@ -13,6 +13,7 @@ type EditableUser = {
     | "DISCHARGE_COORDINATOR"
     | "NURSE"
     | "PATIENT_SAFETY_OFFICER";
+  isActive: boolean;
 };
 
 type EditUserFormProps = {
@@ -29,6 +30,7 @@ export default function EditUserForm({
   const [role, setRole] = useState(user.role);
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [isActive, setIsActive] = useState(user.isActive);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -45,6 +47,7 @@ export default function EditUserForm({
           email,
           role,
           password,
+          isActive,
         }),
       });
 
@@ -154,6 +157,30 @@ export default function EditUserForm({
               </option>
             </select>
           </div>
+          <div className="mt-6">
+  <label
+    htmlFor="isActive"
+    className="text-sm font-semibold text-brand-navy"
+  >
+    Account Status
+  </label>
+
+  <select
+    id="isActive"
+    value={isActive ? "ACTIVE" : "INACTIVE"}
+    onChange={(event) =>
+      setIsActive(event.target.value === "ACTIVE")
+    }
+    className="mt-2 w-full rounded-lg border border-border-strong bg-surface px-4 py-3 text-brand-navy outline-none transition focus:border-brand-teal"
+  >
+    <option value="ACTIVE">Active</option>
+    <option value="INACTIVE">Inactive</option>
+  </select>
+
+  <p className="mt-2 text-sm text-text-muted">
+    Inactive users cannot sign in to CareGuardian.
+  </p>
+</div>
 
           <div className="mt-6">
             <label

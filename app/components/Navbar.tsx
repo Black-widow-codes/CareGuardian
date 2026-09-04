@@ -53,7 +53,7 @@ export default async function Navbar() {
           </div>
         </div>
 
-        {session ? (
+        {session?.user ? (
           <UserMenu
           name={session.user?.name ?? "User"}
         />

@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+﻿import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
@@ -26,7 +26,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           where: { email },
         });
 
-        if (!user) return null;
+        if (!user || !user.isActive) return null;
 
         const passwordIsValid = await bcrypt.compare(password, user.password);
 
@@ -50,6 +50,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.name = user.name;
         token.email = user.email;
         token.role = user.role;
+        token.isActive = true;
 
         return token;
       }
@@ -67,6 +68,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               name: true,
               email: true,
               role: true,
+              isActive: true,
             },
           });
 
@@ -74,6 +76,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             token.name = currentUser.name;
             token.email = currentUser.email;
             token.role = currentUser.role;
+            token.isActive = currentUser.isActive;
           }
         }
       }
@@ -82,6 +85,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     async session({ session, token }) {
+      if (token.isActive === false) {
+        return {
+          ...session,
+          user: undefined,
+        };
+      }
+
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;

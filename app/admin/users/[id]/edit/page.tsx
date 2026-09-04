@@ -40,6 +40,7 @@ export default async function EditUserPage({
       name: true,
       email: true,
       role: true,
+      isActive: true,
     },
   });
 
