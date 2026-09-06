@@ -1,4 +1,4 @@
-﻿import bcrypt from "bcryptjs";
+import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/auth";
@@ -89,6 +89,32 @@ export async function PUT(
       );
     }
 
+    if (String(userId) === session.user.id && !isActive) {
+      return NextResponse.json(
+        { error: "You cannot deactivate your own account." },
+        { status: 400 }
+      );
+    }
+
+    if (
+      existingUser.role === "ADMIN" &&
+      existingUser.isActive &&
+      (role !== "ADMIN" || !isActive)
+    ) {
+      const activeAdminCount = await prisma.user.count({
+        where: {
+          role: "ADMIN",
+          isActive: true,
+        },
+      });
+
+      if (activeAdminCount <= 1) {
+        return NextResponse.json(
+          { error: "CareGuardian must have at least one active administrator." },
+          { status: 400 }
+        );
+      }
+    }
     const emailOwner = await prisma.user.findUnique({
       where: { email },
     });
@@ -149,5 +175,3 @@ export async function PUT(
     );
   }
 }
-
-
