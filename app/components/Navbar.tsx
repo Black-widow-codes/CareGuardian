@@ -1,3 +1,4 @@
+import { hasPermission } from "@/lib/auth/permissions";
 import Link from "next/link";
 import UserMenu from "@/app/components/UserMenu";
 import { auth } from "@/auth";
@@ -41,6 +42,15 @@ export default async function Navbar() {
             >
               Follow-Up
             </Link>
+
+            {hasPermission(session?.user?.role, "VIEW_AUDIT_LOGS") && (
+  <Link
+    href="/audit-logs"
+    className="text-sm font-medium text-white/90 transition hover:text-white"
+  >
+    Audit Log
+  </Link>
+)}
 
             {session?.user?.role === "ADMIN" && (
   <Link
