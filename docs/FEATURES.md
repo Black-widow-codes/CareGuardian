@@ -149,7 +149,10 @@ Current capabilities include:
 - Protected application routes
 - Protected API endpoints
 - Logout and return to the login screen
-
+- User roles refreshed from the database during authenticated sessions
+- Account status refreshed from the database during authenticated sessions
+- Inactive accounts prevented from authenticating
+- Access revoked after a deactivated user's session refreshes
 ## Role-Based Access Control
 
 Current system roles include:
@@ -211,24 +214,25 @@ Current capabilities include:
 - Edit user names
 - Edit user email addresses
 - Assign CareGuardian roles
+- Activate and deactivate staff accounts
+- Display Active and Inactive account status
 - Change a user's password when required
 - Preserve the existing password when no password change is requested
 - Prevent duplicate user email addresses
 - Validate passwords on both the client and server
 - Restrict User Management to authorized administrators
 - Protect User Management APIs with server-side authorization
+- Prevent an administrator from deactivating their own authenticated account
+- Prevent removal or deactivation of the final active Administrator
 
 Passwords are hashed before storage and are never returned by the User Management API.
 
 Planned administrative capabilities include:
 
-- Account activation and deactivation
 - Additional account security controls
 - Sorting and pagination
-- Administrative audit logging
 
 ---
-
 # Data Layer
 
 Current implementation includes:
@@ -257,23 +261,81 @@ The repository layer separates application logic from direct database access and
 - Protected user-management APIs
 - Server-side authorization
 - Administrative user management
+- Account activation and deactivation
+- Inactive-account authentication prevention
+- Database-backed role refresh during authenticated sessions
+- Database-backed account-status refresh during authenticated sessions
+- Administrator self-deactivation protection
+- Final active Administrator safeguard
 - Client-side and server-side password validation
 - Unauthorized access handling
 - `401 Unauthorized` handling
 - `403 Forbidden` handling
 - Permission-aware navigation and interface controls
 
-## Planned
+## Audit Logging
 
-- Account activation and deactivation
-- Session management improvements
-- Audit logging
-- Security event tracking
+CareGuardian records security-relevant User Management activity in a persistent audit log.
+
+Current audited events include:
+
+- `USER_CREATED`
+- `USER_UPDATED`
+- `USER_ROLE_CHANGED`
+- `USER_DEACTIVATED`
+- `USER_REACTIVATED`
+
+Audit records include:
+
+- Actor user ID
+- Actor name
+- Actor email
+- Actor role
+- Action
+- Entity type
+- Entity ID
+- Human-readable event description
+- Timestamp
+
+Passwords and password hashes are not stored in audit records.
+
+## Audit Log Interface
+
+CareGuardian provides a protected Audit Log interface at `/audit-logs`.
+
+Current capabilities include:
+
+- Display the 100 most recent audit events
+- Display events newest first
+- View actor identity
+- View action type
+- View affected entity
+- View event description
+- View event timestamp
+- Permission-aware Audit Log navigation
+
+Audit Log access requires the `VIEW_AUDIT_LOGS` permission.
+
+Current authorized roles are:
+
+- Administrator
+- Patient Safety Officer
+
+Unauthorized roles cannot access the Audit Log page directly.
+
+## Planned Security Hardening
+
+- Expanded audit coverage beyond User Management
+- Audit-log filtering, search, and pagination
+- Audit retention policies
+- Stronger audit integrity controls
+- Transactional coupling of critical mutations and audit writes where appropriate
+- Session expiration review
+- Broader logout and session invalidation review
 - Login attempt monitoring
 - Additional enterprise security controls
 
 ---
-
 # Artificial Intelligence & Clinical Intelligence
 
 Artificial intelligence is a future CareGuardian capability rather than a replacement for healthcare professionals or the platform's existing safety rules.

@@ -8,19 +8,15 @@ CareGuardian is being developed incrementally, with each milestone strengthening
 
 ## Current Version
 
-**v0.6 – Identity & Access Management**
+**v0.7 – Security, Auditability & Access Control**
 
 ---
 
-## Current Sprint
+## Current Status
 
-**Sprint 3 – Identity & Access Hardening**
+CareGuardian now has a working security foundation covering authentication, role-based authorization, staff account lifecycle management, administrator safeguards, and User Management audit logging.
 
-### Status
-
-**Core Authentication, RBAC, and User Management Complete**
-
-The remaining v0.6 work focuses on strengthening session security, completing role verification, and preparing the platform for enterprise auditability.
+The current development focus is completing remaining security verification and strengthening the audit foundation before expanding audit coverage to clinical activity.
 
 ---
 
@@ -32,13 +28,16 @@ Implemented:
 
 - Credentials-based authentication with Auth.js
 - Secure password hashing with bcrypt
-- JWT-based sessions
-- User identity stored in authenticated sessions
-- User roles stored in authenticated sessions
+- JWT-based authenticated sessions
 - Protected application routes
+- Protected API endpoints
 - Authenticated navigation
 - Logout workflow
 - Unauthorized access handling
+- Database-backed user-role refresh during authenticated sessions
+- Database-backed account-status refresh during authenticated sessions
+- Inactive users prevented from authenticating
+- Access revoked after a deactivated user's session refreshes
 
 ---
 
@@ -65,80 +64,48 @@ Current permissions include:
 - MANAGE_USERS
 - VIEW_AUDIT_LOGS
 
+Authorization is enforced independently at the user-interface and API levels.
+
 ---
 
-## UI Permission Enforcement
-
-CareGuardian adapts available actions and navigation to the authenticated user's permissions.
+## User Management & Account Lifecycle
 
 Implemented:
 
-- Permission-controlled New Patient action
-- Permission-controlled Edit Patient action
-- Permission-controlled Delete Patient action
-- Permission-aware User Management access
-- Administrator-only Admin navigation
-- Access Denied page for restricted administrative functions
-- Authenticated user displayed in navigation
-- Role information used for authorization without unnecessary role labels in the main navigation
-
----
-
-## API Authorization
-
-Server-side authorization is enforced independently of the user interface.
-
-Protected patient and clinical endpoints include:
-
-- `GET /api/patients` → requires VIEW_PATIENTS
-- `POST /api/patients` → requires CREATE_PATIENT
-- `PUT /api/patients/[id]` → requires EDIT_PATIENT
-- `DELETE /api/patients/[id]` → requires DELETE_PATIENT
-- `GET /api/alerts` → requires authenticated patient-view access
-
-Protected user-management endpoints include:
-
-- `GET /api/users` → requires VIEW_USERS
-- `POST /api/users` → requires MANAGE_USERS
-- `PUT /api/users/[id]` → requires MANAGE_USERS
-
-Authorization behavior:
-
-- Unauthenticated requests return `401 Unauthorized`
-- Authenticated users without the required permission return `403 Forbidden`
-- Authorized users can perform permitted operations normally
-- Direct API requests cannot bypass interface permission restrictions
-
----
-
-## User Management
-
-Administrative User Management is implemented.
-
-Current capabilities include:
-
 - View CareGuardian staff accounts
-- Create new staff accounts
-- Edit user names
-- Edit user email addresses
-- Assign and update user roles
-- Change user passwords when required
-- Preserve an existing password when no password change is requested
+- Create staff accounts
+- Edit names and email addresses
+- Assign and update roles
+- Change passwords when required
+- Preserve passwords when no change is requested
 - Prevent duplicate email addresses
 - Hash passwords before storage
-- Validate passwords on both the client and server
-- Restrict User Management to authorized administrators
-- Protect user-management APIs with server-side authorization
+- Client-side and server-side password validation
+- Activate and deactivate staff accounts
+- Display Active and Inactive account status
+- Prevent inactive users from authenticating
+- Protect User Management APIs with server-side authorization
 
 Passwords are never returned by User Management API responses.
 
 ---
 
+## Administrator Safeguards
+
+Implemented and verified:
+
+- An administrator cannot deactivate their own authenticated account
+- CareGuardian must retain at least one active Administrator
+- The final active Administrator cannot be deactivated
+- The final active Administrator cannot be changed to a non-administrator role
+
+These safeguards are enforced by the server-side API.
+
+---
+
 ## Patient Identity
 
-Structured patient identity has been added to the CareGuardian patient model.
-
-Implemented fields include:
+Structured patient identity includes:
 
 - Medical Record Number (MRN)
 - First name
@@ -150,127 +117,131 @@ Implemented fields include:
 - Gender identity
 - Pronouns
 
-CareGuardian uses structured patient names while retaining compatibility with earlier patient records during migration.
+CareGuardian retains compatibility with earlier patient records while using structured patient identity throughout current workflows.
 
 ---
 
-## RBAC Verification
+## Audit Logging Foundation
 
-Role-based authorization has been manually tested across key workflows.
+Implemented:
 
-Verified:
+- Persistent `AuditLog` database model
+- Prisma migration for audit-log storage
+- Actor identity snapshots
+- Entity and action information
+- Event descriptions and timestamps
+- Database indexes supporting actor, entity, and timestamp lookup
 
-### Administrator
+Current User Management audit events include:
 
-- Can view User Management
-- Can create users
-- Can edit users
-- Can assign roles
-- Can manage patients
+- `USER_CREATED`
+- `USER_UPDATED`
+- `USER_ROLE_CHANGED`
+- `USER_DEACTIVATED`
+- `USER_REACTIVATED`
 
-### Nurse
-
-- Can view patient information
-- Can edit patients
-- Cannot create patients
-- Cannot delete patients
-- Cannot access User Management
-- Direct restricted API requests return `403 Forbidden`
-
-### Discharge Coordinator
-
-- Can view patients
-- Can create patients
-- Can edit patients
-- Cannot access User Management
-- Cannot perform user-management operations through direct API requests
-- Direct restricted user-management API requests return `403 Forbidden`
-
-### Authentication Protection
-
-- Unauthenticated users cannot retrieve protected patient information
-- Unauthenticated users cannot retrieve protected clinical alerts
-- Interface restrictions cannot be bypassed through tested direct API requests
+Passwords and password hashes are excluded from audit records.
 
 ---
 
-# Remaining v0.6 Work
+## Audit Log Interface
 
-## Complete Role Verification
+Implemented:
 
-The Patient Safety Officer role still requires complete workflow verification.
+- Protected `/audit-logs` interface
+- Display of the 100 most recent events
+- Newest-first ordering
+- Actor, action, target, description, and timestamp visibility
+- Permission-aware Audit Log navigation
+- `VIEW_AUDIT_LOGS` authorization
 
-Planned:
+Verified access:
 
-- Test PATIENT_SAFETY_OFFICER patient access
-- Test PATIENT_SAFETY_OFFICER restricted actions
-- Test audit-log permission behavior when audit logging becomes available
-- Review all role permissions before closing v0.6
+- Administrator can access the Audit Log
+- Patient Safety Officer can access the Audit Log
+- Nurse cannot access the Audit Log
+- Unauthorized direct access redirects to the unauthorized page
 
 ---
+
+# Current Security Hardening
+
+The security foundation is functional, but additional work remains before CareGuardian should be considered production-ready for clinical use.
+
+## Role Verification
+
+Remaining:
+
+- Complete Patient Safety Officer patient-workflow verification
+- Verify restricted Patient Safety Officer patient actions
+- Verify role-specific patient API behavior
 
 ## Session Security
 
-Current JWT sessions capture role information at authentication time.
+Remaining:
 
-Before role administration is considered fully hardened, CareGuardian should address the possibility that a user's permissions may change while an existing session remains active.
-
-Planned:
-
-- Ensure role changes are reflected securely in active or subsequent sessions
 - Review session expiration behavior
-- Review authentication error handling
-- Review logout and session invalidation behavior
-- Define appropriate session lifetime
-- Test access after administrative role changes
+- Define an appropriate session lifetime
+- Review broader logout and session invalidation behavior
 
----
+## Authorization Architecture
 
-## Account Lifecycle
+Remaining:
 
-Planned:
+- Reduce duplicated API authorization logic where appropriate
+- Review permissions as additional clinical modules are introduced
 
-- Account activation and deactivation
-- Prevent inactive users from authenticating
-- Safeguards against accidental loss of administrative access
-- Review administrator self-role changes
-- Additional account security controls
+## Audit Hardening
 
-Hard deletion of staff accounts should not be the default account-management strategy because historical user identity may be required for future audit records.
+Remaining:
+
+- Expand audit coverage beyond User Management
+- Add audit filtering, search, and pagination
+- Define audit retention policies
+- Strengthen audit integrity controls
+- Couple critical mutations and their audit writes transactionally where appropriate
+- Add authentication-event logging
+- Add authorization-failure logging
+- Add additional security monitoring
+
+The current User Management mutation and audit-write operations should not yet be considered transactionally atomic.
 
 ---
 
 # Next Task
 
-Complete **v0.6 Identity & Access Hardening**.
+Strengthen the **v0.7 security and audit foundation**.
 
-The immediate priorities are:
+Immediate priorities are:
 
-1. Verify the Patient Safety Officer role.
-2. Strengthen session behavior when user roles change.
-3. Review administrator account safeguards.
-4. Prepare authentication and authorization events for future audit logging.
+1. Complete remaining Patient Safety Officer workflow verification.
+2. Review session expiration and broader invalidation behavior.
+3. Improve audit integrity for critical mutations.
+4. Expand audit coverage beyond User Management.
+5. Add useful Audit Log filtering and search.
 
-Once these controls are stable and tested, v0.6 can be closed and development can move to enterprise auditability.
+These improvements should be completed before CareGuardian's security architecture is treated as mature enough for broader clinical-module expansion.
 
 ---
 
 # Next Major Milestone
 
-## v0.7 – Enterprise Security & Auditability
+## v0.8 – Clinical Auditability & Security Hardening
 
 Planned capabilities include:
 
-- Enterprise audit logging
-- User activity timeline
+- Patient activity audit logging
 - Authentication event logging
 - Authorization failure logging
-- Session auditing
-- Security monitoring
-- Administrative activity tracking
-- Audit review interface
+- Expanded administrative activity tracking
+- Audit Log filtering and search
+- Audit pagination
+- Audit retention strategy
+- Stronger audit integrity
+- Session-security hardening
+- Security monitoring foundations
 
-The audit architecture should support sensitive events such as:
+Clinical audit coverage should eventually include events such as:
 
 - Patient creation
 - Patient updates
@@ -278,14 +249,14 @@ The audit architecture should support sensitive events such as:
 - User creation
 - User profile changes
 - Role changes
+- Account activation and deactivation
 - Password changes or resets
 - Authentication events
 - Authorization failures
 
-Audit records should identify who performed an action, what action occurred, when it occurred, and the affected resource where appropriate.
+Audit records should continue to identify who performed an action, what occurred, when it occurred, and the affected resource where appropriate.
 
 ---
-
 # Future CareGuardian Direction
 
 CareGuardian is being developed as a broader digital patient-safety and clinical decision-support platform.

@@ -154,7 +154,7 @@ Verified:
 
 ## Sprint 3 – User Management & Identity Hardening
 
-**Status:** In Progress
+**Status:** Complete
 
 ### Added
 
@@ -227,34 +227,130 @@ Verified:
 - Clinical roles no longer see an Admin navigation item
 - User role text was removed from the main navigation to reduce interface clutter
 
+#### Account Lifecycle & Session Security
+
+Added secure staff account lifecycle management.
+
+Implemented:
+
+- Active and inactive account status
+- Administrator-controlled account activation and deactivation
+- Inactive accounts blocked from authentication
+- Existing sessions refresh current role information from the database
+- Existing sessions refresh current account status from the database
+- Deactivated users lose continued application access after session refresh
+- User Management displays Active and Inactive account status
+- Server-side validation of account-status updates
+
+#### Administrator Safeguards
+
+Added protections against accidental loss of administrative access.
+
+Implemented:
+
+- Administrators cannot deactivate their own currently authenticated account
+- CareGuardian must retain at least one active Administrator
+- The final active Administrator cannot be deactivated
+- The final active Administrator cannot be changed to a non-administrator role
+- Administrator safeguards are enforced by the server-side API
+
+#### Account Lifecycle Verification
+
+Verified:
+
+- Administrator can deactivate another staff account
+- Administrator can reactivate another staff account
+- Inactive users cannot authenticate
+- Existing authenticated users lose access after their account is deactivated and the session refreshes
+- User role changes are reflected in existing sessions
+- Administrator cannot deactivate their own account
+- CareGuardian prevents removal of the final active Administrator
 ### Milestone Commit
 
 `41cc42e` – `feat(users): add secure user management`
 
 ---
 
+## Sprint 4 – Audit Logging & Security Monitoring
+
+**Status:** Complete
+
+### Added
+
+#### Audit Logging Foundation
+
+- Added persistent `AuditLog` database model
+- Added Prisma migration for audit-log storage
+- Added indexes for actor, entity, and timestamp lookup
+- Actor identity stored as a historical snapshot
+- Passwords and password hashes excluded from audit records
+
+#### User Management Audit Events
+
+CareGuardian now records:
+
+- `USER_CREATED`
+- `USER_UPDATED`
+- `USER_ROLE_CHANGED`
+- `USER_DEACTIVATED`
+- `USER_REACTIVATED`
+
+Each event records:
+
+- Actor user ID
+- Actor name
+- Actor email
+- Actor role
+- Action
+- Entity type
+- Entity ID
+- Human-readable description
+- Timestamp
+
+#### Audit Log Interface
+
+- Added protected `/audit-logs` page
+- Displays the 100 most recent events
+- Events displayed newest first
+- Displays actor identity, action, target, timestamp, and event details
+- Added permission-aware Audit Log navigation
+- Improved audit action badge presentation
+
+#### Audit Authorization
+
+Audit Log access requires `VIEW_AUDIT_LOGS`.
+
+Authorized roles:
+
+- Administrator
+- Patient Safety Officer
+
+Verified:
+
+- Administrator can access the Audit Log
+- Patient Safety Officer can access the Audit Log
+- Nurse cannot access the Audit Log
+- Direct URL access by an unauthorized role redirects to the unauthorized page
+- Audit Log navigation is hidden from unauthorized roles
+
+#### Interface Reliability
+
+- Corrected invalid Role/Status table-cell nesting in User Management
+- Removed the resulting React hydration error
+
+---
 ## Remaining v0.6 Work
 
 ### Patient Safety Officer Verification
 
 - Verify patient access
-- Verify restricted actions
-- Verify role-specific API behavior
+- Verify restricted patient actions
+- Verify role-specific patient API behavior
 
 ### Session Security
 
-- Review JWT role behavior when a user's role changes
-- Ensure updated permissions are reflected securely
-- Review session expiration
-- Review logout and session invalidation behavior
-- Test access after administrative role changes
-
-### Account Lifecycle
-
-- Add account activation and deactivation
-- Prevent inactive users from authenticating
-- Add safeguards against accidental loss of administrator access
-- Review administrator self-role changes
+- Review session expiration behavior
+- Review logout and broader session invalidation behavior
 
 ### Authorization Improvements
 
@@ -262,7 +358,6 @@ Verified:
 - Review permissions as new clinical modules are introduced
 
 ---
-
 # v0.5 – Data Layer & Patient Management
 
 **Status:** Complete
