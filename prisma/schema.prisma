@@ -55,6 +55,27 @@ model Patient {
   updatedAt                  DateTime @updatedAt
 }
 
+model AuditLog {
+  id          Int      @id @default(autoincrement())
+
+  actorUserId Int?
+  actorName   String
+  actorEmail  String
+  actorRole   String
+
+  action      String
+  entityType  String
+  entityId    String?
+  description String
+
+  createdAt   DateTime @default(now())
+
+  @@index([actorUserId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+
 enum UserRole {
   ADMIN
   DISCHARGE_COORDINATOR

@@ -130,6 +130,19 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    await prisma.auditLog.create({
+      data: {
+        actorUserId: Number(session.user.id),
+        actorName: session.user.name ?? "Unknown User",
+        actorEmail: session.user.email ?? "Unknown Email",
+        actorRole: session.user.role,
+        action: "USER_CREATED",
+        entityType: "USER",
+        entityId: String(user.id),
+        description: `${session.user.name ?? "Unknown User"} created user ${user.name}.`,
+      },
+    });
+
     return NextResponse.json(user, { status: 201 });
   } catch (error) {
     console.error("Error creating user:", error);

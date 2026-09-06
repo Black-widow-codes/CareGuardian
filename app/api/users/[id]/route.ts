@@ -150,6 +150,19 @@ export async function PUT(
       updateData.password = await bcrypt.hash(password, 12);
     }
 
+    let auditAction = "USER_UPDATED";
+    let auditDescription = `${session.user.name ?? "Unknown User"} updated user ${existingUser.name}.`;
+
+    if (existingUser.isActive && !isActive) {
+      auditAction = "USER_DEACTIVATED";
+      auditDescription = `${session.user.name ?? "Unknown User"} deactivated user ${existingUser.name}.`;
+    } else if (!existingUser.isActive && isActive) {
+      auditAction = "USER_REACTIVATED";
+      auditDescription = `${session.user.name ?? "Unknown User"} reactivated user ${existingUser.name}.`;
+    } else if (existingUser.role !== role) {
+      auditAction = "USER_ROLE_CHANGED";
+      auditDescription = `${session.user.name ?? "Unknown User"} changed ${existingUser.name}'s role from ${existingUser.role} to ${role}.`;
+    }
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: updateData,
@@ -164,6 +177,19 @@ export async function PUT(
       },
     });
 
+
+    await prisma.auditLog.create({
+      data: {
+        actorUserId: Number(session.user.id),
+        actorName: session.user.name ?? "Unknown User",
+        actorEmail: session.user.email ?? "Unknown Email",
+        actorRole: session.user.role,
+        action: auditAction,
+        entityType: "USER",
+        entityId: String(updatedUser.id),
+        description: auditDescription,
+      },
+    });
 
     return NextResponse.json(updatedUser);
   } catch (error) {
