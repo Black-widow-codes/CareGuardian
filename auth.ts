@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
+    maxAge: 8 * 60 * 60,
   },
 
   providers: [
@@ -77,6 +78,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             token.email = currentUser.email;
             token.role = currentUser.role;
             token.isActive = currentUser.isActive;
+          } else {
+            token.isActive = false;
           }
         }
       }
