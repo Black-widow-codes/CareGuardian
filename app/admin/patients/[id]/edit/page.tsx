@@ -1,3 +1,7 @@
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+import { hasPermission } from "@/lib/auth/permissions";
 import PageHeader from "@/app/components/PageHeader";
 import PatientForm from "@/app/components/PatientForm";
 import { patientRepository } from "@/repositories/patientRepository";
@@ -7,6 +11,16 @@ export default async function EditPatientPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  if (!hasPermission(session.user.role, "EDIT_PATIENT")) {
+    redirect("/unauthorized");
+  }
+
   const { id } = await params;
   const patient = await patientRepository.findById(Number(id));
 

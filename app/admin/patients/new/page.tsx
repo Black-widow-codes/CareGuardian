@@ -1,7 +1,20 @@
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+import { hasPermission } from "@/lib/auth/permissions";
 import PageHeader from "@/app/components/PageHeader";
 import PatientForm from "@/app/components/PatientForm";
 
-export default function NewPatientPage() {
+export default async function NewPatientPage() {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  if (!hasPermission(session.user.role, "CREATE_PATIENT")) {
+    redirect("/unauthorized");
+  }
   return (
     <main className="min-h-screen bg-background px-6 py-10">
       <div className="mx-auto max-w-5xl">
