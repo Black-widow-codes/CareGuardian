@@ -1,3 +1,7 @@
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+import { hasPermission } from "@/lib/auth/permissions";
 import DischargeReadinessBadge from "@/app/components/DischargeReadinessBadge";
 import RiskExplanation from "@/app/components/RiskExplanation";
 import { patientRepository } from "@/repositories/patientRepository";
@@ -10,6 +14,16 @@ export default async function PatientDetailsPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  if (!hasPermission(session.user.role, "VIEW_PATIENTS")) {
+    redirect("/unauthorized");
+  }
+
   const { id } = await params;
   const patient = await patientRepository.findById(Number(id));
 
