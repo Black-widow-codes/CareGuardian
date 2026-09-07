@@ -1,6 +1,19 @@
+import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+import { hasPermission } from "@/lib/auth/permissions";
 import PageHeader from "../components/PageHeader";
 
-export default function FollowUpPage() {
+export default async function FollowUpPage() {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  if (!hasPermission(session.user.role, "VIEW_PATIENTS")) {
+    redirect("/unauthorized");
+  }
   return (
     <main className="min-h-screen bg-background px-6 py-10">
       <div className="mx-auto max-w-5xl">
