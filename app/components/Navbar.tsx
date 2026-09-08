@@ -29,6 +29,17 @@ export default async function Navbar() {
               Patients
             </Link>
 
+            {(hasPermission(session?.user?.role, "CREATE_PATIENT") ||
+              hasPermission(session?.user?.role, "EDIT_PATIENT") ||
+              hasPermission(session?.user?.role, "DELETE_PATIENT")) && (
+              <Link
+                href="/admin/patients"
+                className="text-sm font-medium text-white/90 transition hover:text-white"
+              >
+                Manage Patients
+              </Link>
+            )}
+
             <Link
               href="/alerts"
               className="text-sm font-medium text-white/90 transition hover:text-white"

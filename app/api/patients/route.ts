@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/auth";
 import { hasPermission } from "@/lib/auth/permissions";
+import { prisma } from "@/lib/prisma";
 import { patientRepository } from "@/repositories/patientRepository";
 
 export async function GET() {
@@ -96,6 +97,19 @@ export async function POST(request: NextRequest) {
       issue: body.issue,
       score: body.score,
       risk: body.risk,
+    });
+
+    await prisma.auditLog.create({
+      data: {
+        actorUserId: Number(session.user.id),
+        actorName: session.user.name ?? "Unknown User",
+        actorEmail: session.user.email ?? "Unknown Email",
+        actorRole: session.user.role,
+        action: "PATIENT_CREATED",
+        entityType: "PATIENT",
+        entityId: String(patient.id),
+        description: `${session.user.name ?? "Unknown User"} created patient ${patient.name}.`,
+      },
     });
 
     return NextResponse.json(patient, { status: 201 });

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/auth";
 import { hasPermission } from "@/lib/auth/permissions";
+import { prisma } from "@/lib/prisma";
 import { patientRepository } from "@/repositories/patientRepository";
 
 export async function PUT(
@@ -71,6 +72,19 @@ export async function PUT(
       risk: body.risk,
     });
 
+    await prisma.auditLog.create({
+      data: {
+        actorUserId: Number(session.user.id),
+        actorName: session.user.name ?? "Unknown User",
+        actorEmail: session.user.email ?? "Unknown Email",
+        actorRole: session.user.role,
+        action: "PATIENT_UPDATED",
+        entityType: "PATIENT",
+        entityId: String(patient.id),
+        description: `${session.user.name ?? "Unknown User"} updated patient ${patient.name}.`,
+      },
+    });
+
     return NextResponse.json(patient);
   } catch (error) {
     console.error("Error updating patient:", error);
@@ -105,7 +119,21 @@ export async function DELETE(
 
     const { id } = await params;
 
-    await patientRepository.delete(Number(id));
+    const deletedPatient = await patientRepository.delete(Number(id));
+
+    await prisma.auditLog.create({
+      data: {
+        actorUserId: Number(session.user.id),
+        actorName: session.user.name ?? "Unknown User",
+        actorEmail: session.user.email ?? "Unknown Email",
+        actorRole: session.user.role,
+        action: "PATIENT_DELETED",
+        entityType: "PATIENT",
+        entityId: String(deletedPatient.id),
+        description: `${session.user.name ?? "Unknown User"} deleted patient ${deletedPatient.name}.`,
+      },
+    });
+
 
     return NextResponse.json({
       message: "Patient deleted successfully",
